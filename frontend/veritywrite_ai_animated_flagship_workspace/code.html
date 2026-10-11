@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#00311f","secondary-fixed":"#e8ddff","surface":"#121318","on-surface-variant":"#cbc3d7","on-primary-fixed-variant":"#5516be","inverse-primary":"#6d3bd7","on-error-container":"#ffdad6","error-container":"#93000a","surface-container":"#1e1f25","on-secondary-fixed-variant":"#4d378c","on-primary-container":"#340080","inverse-on-surface":"#2f3036","on-tertiary-fixed-variant":"#005236","primary-container":"#a078ff","primary":"#d0bcff","surface-tint":"#d0bcff","surface-bright":"#38393f","secondary":"#cebdff","on-secondary-fixed":"#21005e","tertiary":"#4edea3","on-secondary-container":"#c1acff","outline-variant":"#494454","surface-container-low":"#1a1b20","tertiary-fixed-dim":"#4edea3","on-tertiary-fixed":"#002113","outline":"#958ea0","surface-container-highest":"#34343a","on-error":"#690005","primary-fixed-dim":"#d0bcff","tertiary-fixed":"#6ffbbe","surface-dim":"#121318","on-tertiary":"#003824","surface-container-lowest":"#0d0e13","secondary-container":"#503a8f","on-primary":"#3c0091","secondary-fixed-dim":"#cebdff","on-secondary":"#361e74","inverse-surface":"#e3e1e9","primary-fixed":"#e9ddff","tertiary-container":"#00a572","surface-variant":"#34343a","on-primary-fixed":"#23005c","on-surface":"#e3e1e9","on-background":"#e3e1e9","background":"#121318","surface-container-high":"#292a2f","error":"#ffb4ab"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-mobile":"1rem","space-xl":"2rem","space-xs":"0.25rem","margin-mobile":"1rem","space-lg":"1.5rem","margin":"2rem","space-md":"1rem","space-sm":"0.5rem","gutter":"1.5rem"},fontFamily:{"headline-lg-mobile":["Inter"],"headline-xl-mobile":["Inter"],"headline-xl":["Inter"],"label-sm":["Inter"],"body-lg":["Inter"],"headline-md":["Inter"],"label-md":["Inter"],"label-lg":["Inter"],"body-sm":["Inter"],"body-md":["Inter"],"headline-sm":["Inter"],"headline-lg":["Inter"]},fontSize:{"headline-lg-mobile":["24px",{lineHeight:"32px",letterSpacing:"-0.015em",fontWeight:"600"}],"headline-xl-mobile":["30px",{lineHeight:"38px",letterSpacing:"-0.02em",fontWeight:"700"}],"headline-xl":["40px",{lineHeight:"48px",letterSpacing:"-0.02em",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",letterSpacing:"0.04em",fontWeight:"600"}],"body-lg":["16px",{lineHeight:"26px",fontWeight:"400"}],"headline-md":["24px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"600"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.01em",fontWeight:"500"}],"label-lg":["14px",{lineHeight:"20px",fontWeight:"500"}],"body-sm":["13px",{lineHeight:"18px",fontWeight:"400"}],"body-md":["14px",{lineHeight:"22px",fontWeight:"400"}],"headline-sm":["20px",{lineHeight:"28px",letterSpacing:"-0.005em",fontWeight:"600"}],"headline-lg":["32px",{lineHeight:"40px",letterSpacing:"-0.015em",fontWeight:"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between p-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><div class="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[20px]">verified</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">VerityWrite AI</span><span class="font-label-sm text-label-sm text-on-surface-variant">by Team Hackprime</span></div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-lg text-label-lg rounded-lg"><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-label-lg text-label-lg rounded-lg" data-path="workspace" href="#"><span class="material-symbols-outlined text-[20px]">edit_square</span><span>Workspace</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="history" href="#"><span class="material-symbols-outlined text-[20px]">history</span><span>History</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="how-it-works" href="#"><span class="material-symbols-outlined text-[20px]">neurology</span><span>How It Works</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span></a></nav></div><div class="flex flex-col gap-space-sm pt-space-md bg-surface-container-lowest/60 rounded-lg p-space-sm"><div class="flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface">System Status: Ready</span></div><span class="font-label-sm text-label-sm text-on-surface-variant">v2.4.0</span></div><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-between" data-path="privacy-compliance" href="#"><span>Privacy &amp; Compliance</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span></a></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant"><span class="text-on-surface">Workspace</span><span>/</span><span>Editor &amp; Verification</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-surface-container"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface">Gemini 1.5 Pro Engine Active</span></div><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">keyboard</span><span>Shortcuts</span></button><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">menu_book</span><span>Docs</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full bg-surface px-space-lg"><div class="flex flex-col w-full pb-space-xl">
+<!-- Dynamic Atmospheric Glow Accent Behind Main Action Canvas -->
+<div class="relative w-full">
+<div class="absolute -top-16 left-1/4 w-[420px] h-60 bg-primary/20 rounded-full blur-3xl pointer-events-none ambient-pulse"></div>
+<div class="absolute top-24 right-1/6 w-96 h-48 bg-primary-container/25 rounded-full blur-3xl pointer-events-none ambient-pulse" style="animation-delay: 3.5s;"></div>
+<!-- Header Section with Distinctive Typography and Technical Trust Credential -->
+<div class="relative z-10 pt-space-lg pb-space-md flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high w-fit shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase">Zero Data Retention Guarantee • Factual Integrity Engine</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight mt-space-xs">
+          Make your words sound <span class="text-primary underline decoration-primary/40 underline-offset-8">human</span>.
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Refine your writing. Preserve your meaning. Verify what matters.
+        </p>
+</div>
+<!-- Quick Metrics Ribbon -->
+<div class="flex items-center gap-space-md bg-surface-container-low px-space-md py-space-sm rounded-xl shadow-sm self-start md:self-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">ENGINE LATENCY</span>
+<span class="font-label-lg text-label-lg text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">bolt</span> 240ms
+          </span>
+</div>
+<div class="w-px h-8 bg-surface-container-highest"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">HALLUCINATION RISK</span>
+<span class="font-label-lg text-label-lg text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-[16px]">verified_user</span> 0.00%
+          </span>
+</div>
+</div>
+</div>
+<!-- Main Workspace Two-Column Architecture -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mt-space-md">
+<!-- Primary Input & Control Column (Left / Main) -->
+<div class="lg:col-span-8 flex flex-col gap-space-md">
+<!-- Input Mode Selector Tabs -->
+<div class="flex items-center justify-between bg-surface-container-lowest p-1 rounded-xl shadow-inner">
+<div class="flex items-center gap-1" id="inputModeTabs"><button class="mode-tab flex items-center gap-space-xs px-space-md py-space-sm rounded-lg font-label-md text-label-md bg-surface-container-high text-on-surface shadow-sm transition-all duration-200 border border-primary/30" data-mode="text" type="button"><span class="material-symbols-outlined text-[18px] text-primary">edit_note</span><span class="font-medium">Text Input</span><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span></button><button class="mode-tab flex items-center gap-space-xs px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all duration-200 group" data-mode="voice" type="button"><span class="material-symbols-outlined text-[18px] group-hover:text-tertiary transition-colors">mic</span><span>Voice Dictation</span><span class="text-[10px] font-semibold tracking-wide px-2 py-0.5 rounded-full bg-surface-container-highest text-primary flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-tertiary animate-ping"></span>Whisper v3</span></button><button class="mode-tab flex items-center gap-space-xs px-space-md py-space-sm rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all duration-200" data-mode="ocr" type="button"><span class="material-symbols-outlined text-[18px]">document_scanner</span><span>Screenshot OCR</span><span class="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-surface-container-highest text-outline">Vision</span></button></div>
+<!-- Document Utility Shortcuts -->
+<div class="hidden sm:flex items-center gap-space-xs pr-space-xs">
+<button class="flex items-center gap-1 px-space-sm py-1 rounded-md text-on-surface-variant hover:text-primary hover:bg-surface-container text-label-sm font-label-sm transition-colors" id="loadSampleBtn" type="button">
+<span class="material-symbols-outlined text-[15px]">auto_stories</span>
+<span>Load Sample</span>
+</button>
+<button class="flex items-center gap-1 px-space-sm py-1 rounded-md text-on-surface-variant hover:text-error hover:bg-surface-container text-label-sm font-label-sm transition-colors" id="clearTextBtn" type="button">
+<span class="material-symbols-outlined text-[15px]">delete_sweep</span>
+<span>Clear</span>
+</button>
+</div>
+</div>
+<!-- Editor Viewport Container -->
+<div class="relative bg-surface-container-low rounded-xl shadow-xl flex flex-col overflow-hidden group">
+<!-- Text Area -->
+<div class="relative p-space-lg min-h-[310px] bg-surface-container-low">
+<textarea class="w-full bg-transparent text-on-surface font-body-lg text-body-lg placeholder-outline focus:outline-none resize-none leading-relaxed selection:bg-primary-container selection:text-on-primary-container" id="sourceEditor" placeholder="Paste your text, draft, AI output, or research notes here to inspect and humanize..." rows="9" spellcheck="false">The implementation of the multi-agent neural network architecture demonstrates a 34.8% reduction in latency across 12 distributed edge nodes as of Q3 2024. However, it is imperative to acknowledge that subsequent algorithmic iterations necessitate comprehensive validation to avert catastrophic forgetting during continuous reinforcement learning.</textarea>
+</div>
+<!-- Editor Footer Toolbar & Real-time Monospace Diagnostics -->
+<div class="bg-surface-container-lowest px-space-lg py-space-sm flex flex-col sm:flex-row items-center justify-between gap-space-sm"><div class="flex flex-wrap items-center gap-space-sm font-label-sm text-label-sm text-on-surface-variant"><div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high/60 border border-outline-variant/30"><span class="material-symbols-outlined text-[15px] text-tertiary">analytics</span><span class="text-on-surface font-semibold" id="charCount">348</span><span>chars</span><span class="text-outline">/</span><span class="text-on-surface font-semibold" id="wordCount">44</span><span>words</span></div><div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high/40"><span class="material-symbols-outlined text-[14px] text-primary">schedule</span><span>Est. reading:</span><span class="text-on-surface font-semibold" id="readTime">14s</span></div><div class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high/40 text-outline"><span class="material-symbols-outlined text-[14px] text-tertiary">sentiment_calm</span><span>Entropy: Optimal</span></div></div><div class="flex items-center gap-space-xs w-full sm:w-auto justify-end flex-wrap"><div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/30"><button class="flex items-center gap-1 text-[12px] text-on-surface hover:text-primary transition-colors" id="listenPreviewBtn" title="Listen Audio Preview"><span class="material-symbols-outlined text-[16px] text-primary">volume_up</span><span>Audio Preview</span></button><div class="flex items-end gap-0.5 h-4 ml-1 px-1"><span class="soundwave-bar w-0.5 rounded-full bg-primary"></span><span class="soundwave-bar w-0.5 rounded-full bg-primary"></span><span class="soundwave-bar w-0.5 rounded-full bg-primary"></span><span class="soundwave-bar w-0.5 rounded-full bg-primary"></span><span class="soundwave-bar w-0.5 rounded-full bg-primary"></span></div></div><button class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-all hover:scale-105 active:scale-95 shadow-sm border border-outline-variant/30" id="pasteBtn" title="Paste Clipboard Text" type="button"><span class="material-symbols-outlined text-[16px] text-primary">content_paste</span><span>Paste</span></button><button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-all hover:scale-105 active:scale-95 shadow-sm border border-outline-variant/30" id="copyEditorBtn" title="Copy Cleaned Text" type="button"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">content_copy</span></button></div></div>
+</div>
+<!-- Privacy & Ephemeral Warning Microbar -->
+<div class="flex items-center justify-between px-space-md py-space-xs rounded-lg bg-surface-container-lowest text-label-sm font-label-sm text-outline">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-tertiary">lock</span>
+<span>Avoid submitting unmasked PII. Processing is strictly ephemeral and never used for model training.</span>
+</div>
+<span class="hidden md:inline font-mono text-[11px] text-on-surface-variant">ISO/IEC 27001 • SOC2 Type II</span>
+</div>
+<!-- Tone Selector Section -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Target Writing Voice &amp; Tone</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Adapts syntax entropy &amp; rhythmic variation</span>
+</div>
+<!-- Dynamic Tone Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-space-sm" id="toneGrid"><button class="tone-card tone-card-glow selected text-left p-space-md rounded-xl bg-surface-container-high shadow-lg ring-2 ring-primary transition-all flex flex-col justify-between h-36 relative overflow-hidden group" data-tone="professional" type="button"><div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent pointer-events-none"></div><div class="flex items-start justify-between w-full relative z-10"><span class="material-symbols-outlined text-primary text-[22px]">business_center</span><span class="status-indicator flex items-center justify-center w-5 h-5 rounded-full bg-primary text-on-primary shadow-[0_0_12px_rgba(208,188,255,0.8)]"><span class="material-symbols-outlined text-[13px] font-bold">check</span></span></div><div class="flex flex-col mt-space-xs relative z-10"><span class="font-label-lg text-label-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Professional</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">Clear, formal workplace &amp; executive writing</span></div></button><button class="tone-card tone-card-glow text-left p-space-md rounded-xl bg-surface-container shadow-sm hover:bg-surface-container-high hover:ring-1 hover:ring-outline-variant transition-all flex flex-col justify-between h-36 relative overflow-hidden group" data-tone="polished" type="button"><div class="flex items-start justify-between w-full"><span class="material-symbols-outlined text-on-surface-variant text-[22px] group-hover:text-primary transition-colors">auto_awesome</span><span class="status-indicator w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span></div><div class="flex flex-col mt-space-xs"><span class="font-label-lg text-label-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Polished</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">Smooth, effortless prose and refined language</span></div></button><button class="tone-card tone-card-glow text-left p-space-md rounded-xl bg-surface-container shadow-sm hover:bg-surface-container-high hover:ring-1 hover:ring-outline-variant transition-all flex flex-col justify-between h-36 relative overflow-hidden group" data-tone="conversational" type="button"><div class="flex items-start justify-between w-full"><span class="material-symbols-outlined text-on-surface-variant text-[22px] group-hover:text-primary transition-colors">forum</span><span class="status-indicator w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span></div><div class="flex flex-col mt-space-xs"><span class="font-label-lg text-label-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Conversational</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">Warm, relatable, relaxed human cadence</span></div></button><button class="tone-card tone-card-glow text-left p-space-md rounded-xl bg-surface-container shadow-sm hover:bg-surface-container-high hover:ring-1 hover:ring-outline-variant transition-all flex flex-col justify-between h-36 relative overflow-hidden group" data-tone="academic" type="button"><div class="flex items-start justify-between w-full"><span class="material-symbols-outlined text-on-surface-variant text-[22px] group-hover:text-primary transition-colors">school</span><span class="status-indicator w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span></div><div class="flex flex-col mt-space-xs"><span class="font-label-lg text-label-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Academic</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">Precise, structured research-grade clarity</span></div></button><button class="tone-card tone-card-glow text-left p-space-md rounded-xl bg-surface-container shadow-sm hover:bg-surface-container-high hover:ring-1 hover:ring-outline-variant transition-all flex flex-col justify-between h-36 relative overflow-hidden group" data-tone="simple" type="button"><div class="flex items-start justify-between w-full"><span class="material-symbols-outlined text-on-surface-variant text-[22px] group-hover:text-primary transition-colors">spellcheck</span><span class="status-indicator w-2.5 h-2.5 rounded-full bg-surface-container-highest"></span></div><div class="flex flex-col mt-space-xs"><span class="font-label-lg text-label-lg text-on-surface font-semibold group-hover:text-primary transition-colors">Simple English</span><span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 line-clamp-2">Direct wording, short sentences, high accessibility</span></div></button></div>
+</div>
+<!-- Collapsible Advanced Verification & Guardrails Accordion -->
+<div class="bg-surface-container-low rounded-xl shadow-md overflow-hidden">
+<button class="w-full px-space-lg py-space-md flex items-center justify-between text-left hover:bg-surface-container transition-colors" id="accordionTrigger" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[22px]">security</span>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">Advanced Verification &amp; Guardrails</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm font-semibold" id="activeGuardrailBadge">3 active</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] transition-transform duration-200" id="accordionChevron">expand_more</span>
+</button>
+<div class="px-space-lg pb-space-lg flex flex-col gap-space-md" id="accordionContent">
+<!-- Divider subtle line substitute using tonal container -->
+<div class="h-px bg-surface-container-highest w-full"></div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Toggle 1 -->
+<div class="flex items-start justify-between p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex flex-col pr-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-medium">Strict Fact Preservation</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Locks numbers, dates, statistics, and verifiable empirical claims.</span>
+</div>
+<button class="guardrail-toggle shrink-0 w-11 h-6 rounded-full bg-primary-container p-0.5 flex items-center transition-colors" data-toggle="fact" type="button">
+<span class="w-5 h-5 rounded-full bg-on-primary-container shadow-md transform translate-x-5 transition-transform duration-150"></span>
+</button>
+</div>
+<!-- Toggle 2 -->
+<div class="flex items-start justify-between p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex flex-col pr-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-medium">Semantic Verification</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Cross-validates vector embeddings to flag any meaning deviation.</span>
+</div>
+<button class="guardrail-toggle shrink-0 w-11 h-6 rounded-full bg-primary-container p-0.5 flex items-center transition-colors" data-toggle="semantic" type="button">
+<span class="w-5 h-5 rounded-full bg-on-primary-container shadow-md transform translate-x-5 transition-transform duration-150"></span>
+</button>
+</div>
+<!-- Toggle 3 -->
+<div class="flex items-start justify-between p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex flex-col pr-space-xs">
+<span class="font-label-lg text-label-lg text-on-surface font-medium">Skip If Already Natural</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Preserves passages that score high in organic burstiness.</span>
+</div>
+<button class="guardrail-toggle shrink-0 w-11 h-6 rounded-full bg-surface-container-highest p-0.5 flex items-center transition-colors" data-toggle="skip" type="button">
+<span class="w-5 h-5 rounded-full bg-on-surface-variant shadow-md transform translate-x-0 transition-transform duration-150"></span>
+</button>
+</div>
+</div>
+<!-- Protected Terms & Entities Tag Management -->
+<div class="flex flex-col gap-space-xs bg-surface-container p-space-md rounded-lg">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Protected Terms &amp; Entities (Immutable during rewrite)</label>
+<span class="font-label-sm text-label-sm text-outline">Auto-extracted from input</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs pt-1" id="tagList">
+<span class="entity-tag inline-flex items-center gap-1.5 px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-mono text-[12px]">
+<span class="material-symbols-outlined text-primary text-[14px]">lock</span>
+<span>Q3 2024</span>
+<button class="delete-tag hover:text-error ml-1 leading-none text-on-surface-variant" type="button">×</button>
+</span>
+<span class="entity-tag inline-flex items-center gap-1.5 px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-mono text-[12px]">
+<span class="material-symbols-outlined text-primary text-[14px]">lock</span>
+<span>12 distributed edge nodes</span>
+<button class="delete-tag hover:text-error ml-1 leading-none text-on-surface-variant" type="button">×</button>
+</span>
+<span class="entity-tag inline-flex items-center gap-1.5 px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-mono text-[12px]">
+<span class="material-symbols-outlined text-primary text-[14px]">lock</span>
+<span>34.8%</span>
+<button class="delete-tag hover:text-error ml-1 leading-none text-on-surface-variant" type="button">×</button>
+</span>
+<button class="inline-flex items-center gap-1 px-space-sm py-1 rounded-md bg-surface-container-lowest hover:bg-surface-container-highest text-primary font-label-sm text-label-sm transition-colors" id="addTermBtn" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span>
+<span>Add Term</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Action Trigger Bar -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-container flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-primary text-[28px]">shield_lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Gemini 1.5 Pro Hybrid Rewrite Pipeline</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Runs rewriting engine + 7-point fact preservation audit</span>
+</div>
+</div>
+<button class="shimmer-btn w-full sm:w-auto flex items-center justify-center gap-space-sm px-8 py-3.5 rounded-xl text-white font-label-lg text-label-lg font-semibold shadow-[0_0_32px_rgba(168,85,247,0.55)] hover:shadow-[0_0_42px_rgba(168,85,247,0.85)] hover:scale-[1.02] active:scale-95 transition-all shrink-0 cursor-pointer border border-primary/40 relative overflow-hidden" id="humanizeActionBtn" type="button"><span class="material-symbols-outlined text-[20px] text-white animate-pulse">auto_fix_high</span><span class="tracking-wide">Humanize &amp; Verify</span><span class="hidden md:inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-black/30 text-white/90 font-mono text-[11px] border border-white/20 ml-1"><span class="text-[10px]">⌘</span><span>Enter</span></span></button>
+</div>
+</div>
+<!-- Right Inspection Column: Perplexity, Entropy & Synthetic Analysis Sidebar -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Live Perplexity & Entropy Diagnostic Card -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-md flex flex-col gap-space-md"><div class="flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">equalizer</span><h3 class="font-headline-sm text-headline-sm text-on-surface">Input Perplexity</h3></div><div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/40 text-error font-label-sm text-label-sm font-semibold border border-error/30"><span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span><span>High AI Signature</span></div></div><div class="flex items-center gap-4 bg-surface-container p-space-md rounded-xl border border-outline-variant/20 relative overflow-hidden"><div class="relative w-20 h-20 shrink-0 flex items-center justify-center"><svg class="w-20 h-20 transform -rotate-90" viewbox="0 0 100 100"><circle cx="50" cy="50" fill="transparent" r="40" stroke="#34343a" stroke-width="8"></circle><circle cx="50" cy="50" fill="transparent" r="40" stroke="#ffb4ab" stroke-dasharray="251.2" stroke-dashoffset="185" stroke-linecap="round" stroke-width="8" style="filter: drop-shadow(0 0 6px rgba(255,180,171,0.6)); transition: stroke-dashoffset 1.5s ease-out;"></circle></svg><div class="absolute flex flex-col items-center justify-center"><span class="font-headline-sm font-bold text-error leading-none">22</span><span class="text-[10px] text-on-surface-variant font-mono">/100</span></div></div><div class="flex flex-col flex-1 gap-1"><div class="flex items-center justify-between"><span class="font-label-md text-label-md text-on-surface font-semibold">Burstiness Score</span><span class="text-[11px] font-mono text-error font-bold px-1.5 py-0.5 rounded bg-error/10">Rigid Pattern</span></div><p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Repetitive sentence cadence strongly matches LLM synthetic syntax.</p><div class="w-full h-1.5 rounded-full bg-surface-container-lowest overflow-hidden flex mt-1"><div class="h-full bg-error transition-all duration-500" style="width: 78%"></div><div class="h-full bg-surface-container-highest" style="width: 22%"></div></div></div></div><div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-1 border border-outline-variant/20"><div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant"><span>Sentence Entropy Distribution</span><span class="text-outline font-mono text-[11px]">4 sentences scanned</span></div><div class="h-16 w-full flex items-end justify-between gap-2 px-1 pt-2"><div class="w-full bg-error/40 hover:bg-error/70 transition-all rounded-t h-[65%] flex items-center justify-center text-[10px] text-on-error-container font-mono hover:scale-105 cursor-pointer" title="Sentence 1: 65% predictability">S1</div><div class="w-full bg-error/50 hover:bg-error/80 transition-all rounded-t h-[80%] flex items-center justify-center text-[10px] text-on-error-container font-mono hover:scale-105 cursor-pointer" title="Sentence 2: 80% predictability">S2</div><div class="w-full bg-error/30 hover:bg-error/60 transition-all rounded-t h-[45%] flex items-center justify-center text-[10px] text-on-error-container font-mono hover:scale-105 cursor-pointer" title="Sentence 3: 45% predictability">S3</div><div class="w-full bg-error/75 hover:bg-error/95 transition-all rounded-t h-[90%] flex items-center justify-center text-[10px] text-on-error-container font-mono hover:scale-105 cursor-pointer" title="Sentence 4: 90% predictability">S4</div></div></div></div>
+<!-- Detected Generative Markers Card -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-md flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">fact_check</span>
+<span>Flagged Heuristics</span>
+</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 patterns</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Marker 1 -->
+<div class="p-space-sm rounded-lg bg-surface-container flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-error text-[18px] shrink-0 mt-0.5">warning</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Formulaic Transition</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">"However, it is imperative to acknowledge that..."</span>
+</div>
+</div>
+<!-- Marker 2 -->
+<div class="p-space-sm rounded-lg bg-surface-container flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-error text-[18px] shrink-0 mt-0.5">warning</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Abstract Nominalization</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">"necessitate comprehensive validation to avert"</span>
+</div>
+</div>
+<!-- Marker 3 -->
+<div class="p-space-sm rounded-lg bg-surface-container flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Protected Numerical Tokens</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Found 3 discrete quantities pinned for strict preservation.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Audit Provenance Snippet -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider font-semibold">Audit Provenance</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="font-mono text-[11px] text-on-surface-variant bg-surface-container-lowest p-space-sm rounded-lg leading-relaxed">
+<div>SESSION_ID: 0x9f4a21e7...</div>
+<div>VERIFIER: Gemini-1.5-Pro (Heuristic v2)</div>
+<div>ENTROPY_ANALYZER: Multi-Head Self-Attn</div>
+<div>STATUS: Ready for Humanization</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Dynamic Editor Character & Word Count Calculations
+  const editor = document.getElementById('sourceEditor');
+  const charCountEl = document.getElementById('charCount');
+  const wordCountEl = document.getElementById('wordCount');
+  const readTimeEl = document.getElementById('readTime');
+
+  function updateMetrics() {
+    const text = editor.value;
+    const chars = text.length;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    const readSecs = Math.max(1, Math.ceil((words / 200) * 60));
+
+    charCountEl.textContent = chars.toLocaleString();
+    wordCountEl.textContent = words.toLocaleString();
+    readTimeEl.textContent = words === 0 ? '0s' : readSecs + 's';
+  }
+
+  editor.addEventListener('input', updateMetrics);
+
+  // Tab Selection
+  const modeTabs = document.querySelectorAll('.mode-tab');
+  modeTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      modeTabs.forEach(t => {
+        t.classList.remove('bg-surface-container-high', 'text-on-surface');
+        t.classList.add('text-on-surface-variant');
+      });
+      tab.classList.add('bg-surface-container-high', 'text-on-surface');
+      tab.classList.remove('text-on-surface-variant');
+    });
+  });
+
+  // Tone Cards Interactive Switcher
+  const toneCards = document.querySelectorAll('.tone-card');
+  toneCards.forEach(card => {
+    card.addEventListener('click', () => {
+      toneCards.forEach(c => {
+        c.classList.remove('bg-surface-container-high', 'ring-2', 'ring-primary/50');
+        c.classList.add('bg-surface-container');
+        const icon = c.querySelector('.status-indicator');
+        if (icon) {
+          icon.className = 'status-indicator w-2.5 h-2.5 rounded-full bg-surface-container-highest';
+        }
+      });
+      card.classList.remove('bg-surface-container');
+      card.classList.add('bg-surface-container-high', 'ring-2', 'ring-primary/50');
+      const activeIcon = card.querySelector('.status-indicator');
+      if (activeIcon) {
+        activeIcon.className = 'status-indicator w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(208,188,255,0.8)]';
+      }
+    });
+  });
+
+  // Guardrail Toggles Behavior
+  const toggles = document.querySelectorAll('.guardrail-toggle');
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const knob = toggle.querySelector('span');
+      const isCurrentlyActive = toggle.classList.contains('bg-primary-container');
+      if (isCurrentlyActive) {
+        toggle.classList.remove('bg-primary-container');
+        toggle.classList.add('bg-surface-container-highest');
+        knob.classList.remove('translate-x-5', 'bg-on-primary-container');
+        knob.classList.add('translate-x-0', 'bg-on-surface-variant');
+      } else {
+        toggle.classList.add('bg-primary-container');
+        toggle.classList.remove('bg-surface-container-highest');
+        knob.classList.add('translate-x-5', 'bg-on-primary-container');
+        knob.classList.remove('translate-x-0', 'bg-on-surface-variant');
+      }
+      recalculateActiveGuardrails();
+    });
+  });
+
+  function recalculateActiveGuardrails() {
+    const activeCount = document.querySelectorAll('.guardrail-toggle.bg-primary-container').length;
+    const badge = document.getElementById('activeGuardrailBadge');
+    if (badge) {
+      badge.textContent = `${activeCount} active`;
+    }
+  }
+
+  // Collapsible Accordion Logic
+  const accordionTrigger = document.getElementById('accordionTrigger');
+  const accordionContent = document.getElementById('accordionContent');
+  const accordionChevron = document.getElementById('accordionChevron');
+
+  accordionTrigger.addEventListener('click', () => {
+    const isHidden = accordionContent.classList.contains('hidden');
+    if (isHidden) {
+      accordionContent.classList.remove('hidden');
+      accordionChevron.style.transform = 'rotate(0deg)';
+    } else {
+      accordionContent.classList.add('hidden');
+      accordionChevron.style.transform = 'rotate(180deg)';
+    }
+  });
+
+  // Quick Action Buttons
+  document.getElementById('clearTextBtn').addEventListener('click', () => {
+    editor.value = '';
+    updateMetrics();
+  });
+
+  document.getElementById('loadSampleBtn').addEventListener('click', () => {
+    editor.value = "The implementation of the multi-agent neural network architecture demonstrates a 34.8% reduction in latency across 12 distributed edge nodes as of Q3 2024. However, it is imperative to acknowledge that subsequent algorithmic iterations necessitate comprehensive validation to avert catastrophic forgetting during continuous reinforcement learning.";
+    updateMetrics();
+  });
+
+  document.getElementById('pasteBtn').addEventListener('click', async () => {
+    try {
+      const clipText = await navigator.clipboard.readText();
+      if (clipText) {
+        editor.value = clipText;
+        updateMetrics();
+      }
+    } catch {
+      editor.focus();
+    }
+  });
+
+  // Protected Tags deletion
+  document.querySelectorAll('.delete-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      btn.closest('.entity-tag').remove();
+    });
+  });
+
+  // Add term prompt
+  document.getElementById('addTermBtn').addEventListener('click', () => {
+    const newTerm = prompt('Enter protected entity or token:');
+    if (newTerm && newTerm.trim() !== '') {
+      const tagList = document.getElementById('tagList');
+      const span = document.createElement('span');
+      span.className = 'entity-tag inline-flex items-center gap-1.5 px-space-sm py-1 rounded-md bg-surface-container-high text-on-surface font-mono text-[12px]';
+      span.innerHTML = `
+        <span class="material-symbols-outlined text-primary text-[14px]">lock</span>
+        <span>${newTerm.trim()}</span>
+        <button type="button" class="delete-tag hover:text-error ml-1 leading-none text-on-surface-variant">&times;</button>
+      `;
+      span.querySelector('.delete-tag').addEventListener('click', (e) => {
+        e.stopPropagation();
+        span.remove();
+      });
+      tagList.insertBefore(span, document.getElementById('addTermBtn'));
+    }
+  });
+
+  // Action Button animation on click
+  const humanizeBtn = document.getElementById('humanizeActionBtn');
+  humanizeBtn.addEventListener('click', () => {
+    const originalText = humanizeBtn.innerHTML;
+    humanizeBtn.innerHTML = `
+      <span class="material-symbols-outlined text-[20px] animate-spin">sync</span>
+      <span>Auditing &amp; Verifying...</span>
+    `;
+    humanizeBtn.disabled = true;
+    setTimeout(() => {
+      humanizeBtn.innerHTML = `
+        <span class="material-symbols-outlined text-[20px] text-tertiary">check_circle</span>
+        <span>Verified &amp; Humanized</span>
+      `;
+      setTimeout(() => {
+        humanizeBtn.innerHTML = originalText;
+        humanizeBtn.disabled = false;
+      }, 1600);
+    }, 1200);
+  });
+</script></main></div></body></html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#00311f","secondary-fixed":"#e8ddff","surface":"#121318","on-surface-variant":"#cbc3d7","on-primary-fixed-variant":"#5516be","inverse-primary":"#6d3bd7","on-error-container":"#ffdad6","error-container":"#93000a","surface-container":"#1e1f25","on-secondary-fixed-variant":"#4d378c","on-primary-container":"#340080","inverse-on-surface":"#2f3036","on-tertiary-fixed-variant":"#005236","primary-container":"#a078ff","primary":"#d0bcff","surface-tint":"#d0bcff","surface-bright":"#38393f","secondary":"#cebdff","on-secondary-fixed":"#21005e","tertiary":"#4edea3","on-secondary-container":"#c1acff","outline-variant":"#494454","surface-container-low":"#1a1b20","tertiary-fixed-dim":"#4edea3","on-tertiary-fixed":"#002113","outline":"#958ea0","surface-container-highest":"#34343a","on-error":"#690005","primary-fixed-dim":"#d0bcff","tertiary-fixed":"#6ffbbe","surface-dim":"#121318","on-tertiary":"#003824","surface-container-lowest":"#0d0e13","secondary-container":"#503a8f","on-primary":"#3c0091","secondary-fixed-dim":"#cebdff","on-secondary":"#361e74","inverse-surface":"#e3e1e9","primary-fixed":"#e9ddff","tertiary-container":"#00a572","surface-variant":"#34343a","on-primary-fixed":"#23005c","on-surface":"#e3e1e9","on-background":"#e3e1e9","background":"#121318","surface-container-high":"#292a2f","error":"#ffb4ab"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"gutter-mobile":"1rem","space-xl":"2rem","space-xs":"0.25rem","margin-mobile":"1rem","space-lg":"1.5rem","margin":"2rem","space-md":"1rem","space-sm":"0.5rem","gutter":"1.5rem"},fontFamily:{"headline-lg-mobile":["Inter"],"headline-xl-mobile":["Inter"],"headline-xl":["Inter"],"label-sm":["Inter"],"body-lg":["Inter"],"headline-md":["Inter"],"label-md":["Inter"],"label-lg":["Inter"],"body-sm":["Inter"],"body-md":["Inter"],"headline-sm":["Inter"],"headline-lg":["Inter"]},fontSize:{"headline-lg-mobile":["24px",{lineHeight:"32px",letterSpacing:"-0.015em",fontWeight:"600"}],"headline-xl-mobile":["30px",{lineHeight:"38px",letterSpacing:"-0.02em",fontWeight:"700"}],"headline-xl":["40px",{lineHeight:"48px",letterSpacing:"-0.02em",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",letterSpacing:"0.04em",fontWeight:"600"}],"body-lg":["16px",{lineHeight:"26px",fontWeight:"400"}],"headline-md":["24px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"600"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.01em",fontWeight:"500"}],"label-lg":["14px",{lineHeight:"20px",fontWeight:"500"}],"body-sm":["13px",{lineHeight:"18px",fontWeight:"400"}],"body-md":["14px",{lineHeight:"22px",fontWeight:"400"}],"headline-sm":["20px",{lineHeight:"28px",letterSpacing:"-0.005em",fontWeight:"600"}],"headline-lg":["32px",{lineHeight:"40px",letterSpacing:"-0.015em",fontWeight:"600"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between p-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex flex-col gap-space-lg"><div class="flex items-center gap-space-sm px-space-xs"><div class="w-9 h-9 rounded-lg bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[20px]">verified</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">VerityWrite AI</span><span class="font-label-sm text-label-sm text-on-surface-variant">by Team Hackprime</span></div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-label-lg text-label-lg rounded-lg"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="workspace" href="#"><span class="material-symbols-outlined text-[20px]">edit_square</span><span>Workspace</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="history" href="#"><span class="material-symbols-outlined text-[20px]">history</span><span>History</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="how-it-works" href="#"><span class="material-symbols-outlined text-[20px]">neurology</span><span>How It Works</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span></a></nav></div><div class="flex flex-col gap-space-sm pt-space-md bg-surface-container-lowest/60 rounded-lg p-space-sm"><div class="flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface">System Status: Ready</span></div><span class="font-label-sm text-label-sm text-on-surface-variant">v2.4.0</span></div><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-between" data-path="privacy-compliance" href="#"><span>Privacy &amp; Compliance</span><span class="material-symbols-outlined text-[14px]">arrow_forward</span></a></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant"><span class="text-on-surface">Workspace</span><span>/</span><span>Editor &amp; Verification</span></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-full bg-surface-container"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="font-label-sm text-label-sm text-on-surface">Gemini 1.5 Pro Engine Active</span></div><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">keyboard</span><span>Shortcuts</span></button><button class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">menu_book</span><span>Docs</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 w-full bg-surface px-space-lg"><div class="flex flex-col w-full pb-space-xl">
+<!-- Top Section / Workspace Title & Live Telemetry -->
+<section class="flex flex-col gap-space-md mb-space-lg">
+<!-- Guarantee Badge & Engine Telemetry Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-md">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-secondary-container/40 text-on-secondary-container text-label-sm font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>MULTIMODAL VISION OCR</span>
+<span class="text-outline/40">•</span>
+<span>ZERO DATA RETENTION GUARANTEE</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary">bolt</span>
+<span>Latency:</span>
+<span class="text-on-surface font-semibold">310ms</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-tertiary">verified_user</span>
+<span>Hallucination Risk:</span>
+<span class="text-tertiary font-semibold">0.00%</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-primary">analytics</span>
+<span>OCR Precision:</span>
+<span class="text-primary font-semibold">99.8%</span>
+</div>
+</div>
+</div>
+<!-- Editorial Header Block -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-0.5">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Make your words sound human.</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Refine your writing. Preserve your meaning. Verify what matters.</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-sm text-label-sm transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">upload_file</span>
+<span>Replace Image</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Clear Workspace</span>
+</button>
+</div>
+</div>
+<!-- Mode Selector Navigation -->
+<div class="flex items-center justify-between p-1 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-1">
+<button class="flex items-center gap-2 px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+<span>Text Input</span>
+</button>
+<button class="flex items-center gap-2 px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+<span>Voice Dictation</span>
+</button>
+<button class="flex items-center gap-2 px-space-md py-2 rounded-lg bg-surface-container-high text-on-surface shadow-sm text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">document_scanner</span>
+<span>Screenshot OCR</span>
+<span class="px-1.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-[10px]">VISION OCR v2.4</span>
+</button>
+</div>
+<div class="hidden lg:flex items-center gap-2 pr-space-sm text-label-sm font-label-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>Neural Stream Synced</span>
+</div>
+</div>
+</section>
+<!-- 2-Column Main Workspace -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left / Center Main Column (OCR Inspector & Editor) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- 1. Screenshot Source & Bounding Box Viewer -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-xs pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">image</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">quarterly_architecture_brief.png</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">1.4 MB</span>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>OCR Extraction Complete (99.8% Confidence)</span>
+</div>
+</div>
+<!-- Vision Canvas Viewport with Bounding Overlays -->
+<div class="relative w-full h-56 rounded-lg bg-surface-container-lowest overflow-hidden flex items-center justify-center group">
+<!-- Stylized Screenshot Document Background Pattern -->
+<div class="absolute inset-0 p-space-md flex flex-col justify-between opacity-85 select-none pointer-events-none">
+<div class="flex items-center justify-between text-on-surface-variant/40 font-mono text-[11px]">
+<span>[DOC_ID: ARCH-2024-Q3-0941]</span>
+<span>CONFIDENTIAL // DISTRIBUTED AGENTS EVALUATION</span>
+</div>
+<div class="space-y-3 font-mono text-on-surface/80 text-[13px] leading-relaxed max-w-xl">
+<p class="tracking-tight">
+                The implementation of the multi-agent neural network architecture demonstrates a 
+                <span class="bg-primary/20 text-primary-fixed px-1 py-0.5 rounded shadow-sm">34.8% reduction in latency</span>
+                across <span class="bg-primary/20 text-primary-fixed px-1 py-0.5 rounded shadow-sm">12 distributed edge nodes</span>
+                as of <span class="bg-tertiary/20 text-tertiary-fixed px-1 py-0.5 rounded shadow-sm">Q3 2024</span>.
+              </p>
+<p class="text-on-surface-variant/70 text-[12px]">
+                However, it is imperative to acknowledge that subsequent algorithmic iterations necessitate comprehensive validation to avert 
+                <span class="bg-secondary-container/50 text-secondary-fixed px-1 py-0.5 rounded">catastrophic forgetting</span> 
+                during continuous reinforcement learning.
+              </p>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant/40 text-[11px] font-mono">
+<span>BOUNDING RECT: [X: 140, Y: 220, W: 1120, H: 420]</span>
+<span>MODEL: GEMINI-1.5-PRO-VISION-002</span>
+</div>
+</div>
+<!-- Interactive Bounding Highlights -->
+<div class="absolute inset-4 rounded pointer-events-none">
+<div class="absolute left-12 top-10 w-44 h-7 rounded bg-primary/10 flex items-center px-1">
+<span class="text-[9px] font-mono bg-primary text-on-primary px-1 rounded -translate-y-4">NUM_METRIC</span>
+</div>
+<div class="absolute left-64 top-10 w-48 h-7 rounded bg-tertiary/10 flex items-center px-1">
+<span class="text-[9px] font-mono bg-tertiary text-on-tertiary px-1 rounded -translate-y-4">INFRA_ENTITY</span>
+</div>
+</div>
+<!-- Floating Image Controls Overlay -->
+<div class="absolute bottom-2 right-2 flex items-center gap-1.5 p-1 rounded-lg bg-surface-container/90 backdrop-blur-md">
+<button class="px-2 py-1 rounded text-label-sm font-label-sm bg-primary-container/20 text-primary flex items-center gap-1 hover:bg-primary-container/40 transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">crop</span>
+<span>Crop Selection</span>
+</button>
+<button class="px-2 py-1 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+<span>Bounding Boxes (ON)</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 2. Extracted Text Editor / Review Panel -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-xs pb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">subject</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Extracted Text Stream (Editable Draft)</span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm text-on-surface-variant">
+<span>348 chars • 44 words</span>
+<span class="text-outline/40">•</span>
+<span class="text-tertiary">Confidence: 99.8%</span>
+<span class="text-outline/40">•</span>
+<span>Single Column Markdown</span>
+</div>
+</div>
+<!-- Editable Area Container -->
+<div class="relative bg-surface-container-lowest rounded-lg p-space-md">
+<textarea aria-label="Extracted text from screenshot" class="w-full bg-transparent text-on-surface font-body-lg text-body-lg leading-relaxed focus:outline-none resize-none placeholder-outline" id="extracted-text-area" rows="6">The implementation of the multi-agent neural network architecture demonstrates a 34.8% reduction in latency across 12 distributed edge nodes as of Q3 2024. However, it is imperative to acknowledge that subsequent algorithmic iterations necessitate comprehensive validation to avert catastrophic forgetting during continuous reinforcement learning.</textarea>
+<!-- Inline Fact Lock Annotation -->
+<div class="mt-space-sm pt-space-xs flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>All 3 numerical tokens and 2 technical named entities auto-detected and bound for fact preservation.</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="text-on-surface">Lossless Extraction</span>
+</div>
+</div>
+</div>
+<!-- Action Strip Below Editor -->
+<div class="flex flex-wrap items-center justify-between gap-space-xs pt-1">
+<div class="flex items-center gap-1.5">
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-sm text-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">auto_fix_high</span>
+<span>Re-extract with Vision Pro</span>
+</button>
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-sm text-label-sm transition-colors" onclick="navigator.clipboard.writeText(document.getElementById('extracted-text-area').value)" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span>Copy Extracted Text</span>
+</button>
+</div>
+<button class="flex items-center gap-1 px-space-sm py-1 rounded-lg text-on-surface-variant hover:text-error hover:bg-surface-container-high font-label-sm text-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">layers_clear</span>
+<span>Discard Extra Artifacts</span>
+</button>
+</div>
+</div>
+<!-- 3. Target Writing Voice & Tone Selector -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">tune</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Target Writing Voice &amp; Humanization Tone</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Engine: Style Modulation v3</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+<!-- Professional (Selected) -->
+<button class="flex flex-col items-start p-space-sm rounded-lg bg-secondary-container text-on-secondary-container shadow-sm text-left transition-all" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="font-label-md text-label-md font-semibold">Professional</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+<span class="text-[11px] text-on-secondary-container/80 mt-1">Executive clarity</span>
+</button>
+<!-- Polished -->
+<button class="flex flex-col items-start p-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-left transition-all" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="font-label-md text-label-md font-semibold">Polished</span>
+</div>
+<span class="text-[11px] text-on-surface-variant mt-1">Flow &amp; cadence</span>
+</button>
+<!-- Conversational -->
+<button class="flex flex-col items-start p-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-left transition-all" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="font-label-md text-label-md font-semibold">Conversational</span>
+</div>
+<span class="text-[11px] text-on-surface-variant mt-1">Engaging &amp; open</span>
+</button>
+<!-- Academic -->
+<button class="flex flex-col items-start p-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-left transition-all" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="font-label-md text-label-md font-semibold">Academic</span>
+</div>
+<span class="text-[11px] text-on-surface-variant mt-1">Formal rigor</span>
+</button>
+<!-- Simple English -->
+<button class="flex flex-col items-start p-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-left transition-all" type="button">
+<div class="flex items-center justify-between w-full">
+<span class="font-label-md text-label-md font-semibold">Simple English</span>
+</div>
+<span class="text-[11px] text-on-surface-variant mt-1">Direct &amp; concise</span>
+</button>
+</div>
+</div>
+<!-- 4. Advanced Verification & Guardrails Panel -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">shield</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Fact Preservation &amp; Structural Guardrails</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm">High Security Mode</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-1">
+<!-- Toggle 1 -->
+<label class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low cursor-pointer">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Strict Fact Preservation</span>
+<span class="text-[11px] text-on-surface-variant">Lock extracted statistics</span>
+</div>
+<input checked="" class="w-4 h-4 rounded bg-surface-container text-primary focus:ring-0 focus:ring-offset-0 accent-primary" type="checkbox"/>
+</label>
+<!-- Toggle 2 -->
+<label class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low cursor-pointer">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Semantic Verification</span>
+<span class="text-[11px] text-on-surface-variant">Ensure zero intent drift</span>
+</div>
+<input checked="" class="w-4 h-4 rounded bg-surface-container text-primary focus:ring-0 focus:ring-offset-0 accent-primary" type="checkbox"/>
+</label>
+<!-- Toggle 3 -->
+<label class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container-low cursor-pointer">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Preserve Tabular/List Data</span>
+<span class="text-[11px] text-on-surface-variant">Retain markdown spacing</span>
+</div>
+<input checked="" class="w-4 h-4 rounded bg-surface-container text-primary focus:ring-0 focus:ring-offset-0 accent-primary" type="checkbox"/>
+</label>
+</div>
+<!-- Protected Terms Chips -->
+<div class="flex flex-wrap items-center gap-1.5 pt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Protected Anchors:</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[13px] text-tertiary">lock</span>
+<span>34.8%</span>
+</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[13px] text-tertiary">lock</span>
+<span>12 distributed edge nodes</span>
+</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-on-surface text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[13px] text-tertiary">lock</span>
+<span>Q3 2024</span>
+</span>
+<button class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-low hover:bg-surface-container-high text-primary text-label-sm font-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">add</span>
+<span>Add Term</span>
+</button>
+</div>
+</div>
+<!-- 5. Bottom Action Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-high shadow-lg">
+<div class="flex items-center gap-space-sm text-label-md font-label-md text-on-surface-variant">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
+<span>Gemini 1.5 Pro Hybrid Rewrite Pipeline — Ready to Humanize extracted text</span>
+</div>
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 px-space-lg py-3 rounded-xl bg-primary-container text-on-primary-container font-headline-sm text-headline-sm hover:brightness-110 active:scale-[0.99] transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span>Humanize &amp; Verify Extracted Text</span>
+<span class="text-label-sm font-label-sm opacity-70 ml-1">⌘ + ↵</span>
+</button>
+</div>
+</div>
+<!-- Right Column (Vision OCR Telemetry & Extracted Heuristics) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- 1. OCR Vision Quality Card -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">visibility</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Document Vision Metrics</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm font-semibold">HIGH FIDELITY</span>
+</div>
+<div class="flex flex-col gap-2 pt-1">
+<div class="flex items-center justify-between py-1 px-2 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Resolution &amp; DPI</span>
+<span class="text-on-surface font-mono font-medium">2400 x 1480 px (300 DPI)</span>
+</div>
+<div class="flex items-center justify-between py-1 px-2 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Skew &amp; Orientation</span>
+<span class="text-tertiary font-mono font-medium">0.0° Corrected</span>
+</div>
+<div class="flex items-center justify-between py-1 px-2 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Contrast / Legibility Ratio</span>
+<span class="text-on-surface font-mono font-medium">98.5% High Clarity</span>
+</div>
+<div class="flex items-center justify-between py-1 px-2 rounded bg-surface-container-low font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Artifact Noise Index</span>
+<span class="text-tertiary font-mono font-medium">Low (0.02)</span>
+</div>
+</div>
+<!-- Inline Visual Mini Meter -->
+<div class="mt-space-xs p-space-sm rounded-lg bg-surface-container-lowest flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Multimodal Alignment Score</span>
+<span class="text-primary font-semibold">99.8 / 100</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary rounded-full" style="width: 99.8%;"></div>
+</div>
+</div>
+</div>
+<!-- 2. Detected Entity & Data Anchor Inspector -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">fingerprint</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Locked OCR Entities</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">4 detected</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Entity 1 -->
+<div class="p-2 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-mono text-body-sm font-semibold text-primary">"34.8%"</span>
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary-fixed text-[10px] font-mono">METRIC / RATIO</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Vision confidence: 100%</span>
+<span class="text-tertiary">Exact Numeric Lock</span>
+</div>
+</div>
+<!-- Entity 2 -->
+<div class="p-2 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-mono text-body-sm font-semibold text-primary">"12 distributed edge nodes"</span>
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary-fixed text-[10px] font-mono">INFRASTRUCTURE</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Vision confidence: 99.7%</span>
+<span class="text-tertiary">Entity Preserved</span>
+</div>
+</div>
+<!-- Entity 3 -->
+<div class="p-2 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-mono text-body-sm font-semibold text-primary">"Q3 2024"</span>
+<span class="px-1.5 py-0.5 rounded bg-primary/20 text-primary-fixed text-[10px] font-mono">TEMPORAL ANCHOR</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Vision confidence: 100%</span>
+<span class="text-tertiary">Date Synchronized</span>
+</div>
+</div>
+<!-- Entity 4 -->
+<div class="p-2 rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-mono text-body-sm font-semibold text-secondary">"catastrophic forgetting"</span>
+<span class="px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container text-[10px] font-mono">ML PHENOMENON</span>
+</div>
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+<span>Vision confidence: 99.2%</span>
+<span class="text-tertiary">Domain Protected</span>
+</div>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant/80 italic pt-1">
+          Protected from hallucination, synonym replacement, or statistical degradation during rewrite.
+        </p>
+</div>
+<!-- 3. Input Perplexity & Artifact Warning -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">warning_amber</span>
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Pre-Rewrite Heuristics</span>
+</div>
+<span class="text-label-sm font-label-sm text-error font-semibold">HIGH AI SIGNATURE</span>
+</div>
+<div class="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low">
+<div class="relative w-14 h-14 flex items-center justify-center">
+<svg class="w-14 h-14 -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-highest stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="text-error stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="22, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<span class="absolute font-mono text-[13px] font-bold text-on-surface">22</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Perplexity Index: 22/100</span>
+<span class="text-[12px] text-on-surface-variant">Uniform robotic cadence flagged in extracted passage.</span>
+</div>
+</div>
+<!-- Flagged Patterns -->
+<div class="flex flex-col gap-2 pt-1">
+<div class="p-2 rounded bg-surface-container-low flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Formulaic Transition</span>
+<span class="text-[10px] text-error font-mono">SYNTACTIC RISK</span>
+</div>
+<p class="text-[12px] text-on-surface-variant">"However, it is imperative to acknowledge that..."</p>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex flex-col gap-0.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Abstract Nominalization</span>
+<span class="text-[10px] text-error font-mono">DENSITY OVERLOAD</span>
+</div>
+<p class="text-[12px] text-on-surface-variant">"...necessitate comprehensive validation to avert..."</p>
+</div>
+</div>
+</div>
+<!-- 4. Drag & Drop Replacement Zone / Formats Notice -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col items-center justify-center text-center gap-space-xs cursor-pointer hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-container-high group-hover:bg-primary-container group-hover:text-on-primary-container text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_photo_alternate</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Drop replacement snapshot</span>
+<span class="text-[11px] text-on-surface-variant">PNG, JPG, WEBP, PDF up to 20MB</span>
+</div>
+<div class="inline-flex items-center gap-1 text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full mt-1">
+<span class="material-symbols-outlined text-[12px] text-tertiary">lock</span>
+<span>Ephemeral OCR Cache (Auto-purges on exit)</span>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>
