@@ -1,5 +1,5 @@
 # VerityWrite AI (Team Hackprime)
-**Make AI sound natural. Keep every fact intact.**
+**Make AI writing sound natural while keeping every fact intact.**
 Google Student Club Welcome Hackathon 2026, Problem Statement 2: AI Humanization & Natural Language Refinement.
 
 ## Pipeline
