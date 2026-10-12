@@ -1,6 +1,6 @@
 # VerityWrite AI (Team Hackprime)
 **Make AI writing sound natural while keeping every fact intact.**
-Google Student Club Welcome Hackathon 2026, Problem Statement 2: AI Humanization & Natural Language Refinement.
+An AI-powered tool that improves the naturalness and readability of text while preserving its original meaning and facts.
 
 ## Pipeline
 `Input -> FactLock (extract protected facts) -> Robotic-language detector -> Skip gate -> Contextual rewrite (Gemini)
