@@ -31,17 +31,21 @@ Without a key the app still runs in offline demo mode (basic rule-based rewriter
 The results section opens with a Multi-Readability Suite: six formulas (Flesch Reading Ease, Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, ARI), an overall score gauge, and the original-vs-rewrite comparison. Scores are calculated locally in `core/readability.py`; the HTML lives in `core/readview.py`. *Export results* downloads a CSV and *Copy all scores* copies them as text.
 
 ## Voice and screenshots
-- **Speak:** record in the app, click *Transcribe*; the transcript lands in the text box so you can edit it before humanizing.
+- **Speak:** record in the app, click *Transcribe*; audio is sent in memory to Gemini's stateless Interactions API using `GEMINI_AUDIO_MODEL` (default `gemini-3.5-flash-lite`), and the transcript lands in the text box so you can edit it before humanizing. The selected model must be enabled for the API key's project.
 - **Listen:** every rewrite (and screenshot result) has a 🔊 button that reads it aloud.
 - **Screenshot:** upload an image, choose *Extract the text* or *Explain what it shows*, then listen to it or send it to the rewriter.
 - Voice input and screenshot reading need a Gemini key; listening uses gTTS and needs internet access.
-- Audio and images are sent to Gemini, so use synthetic or non-sensitive content only.
+- Audio is sent with `store=false` and is not written to a local file; images are also sent to Gemini. Use synthetic or non-sensitive content only.
 
 ## Test and evaluate
 ```bash
 python -m pytest -q
-python eval/run_eval.py            # writes eval/results.md (uses Gemini if a key is set)
+python eval/run_eval.py --offline  # deterministic fallback; writes eval/results.md
+python eval/run_eval.py            # uses Gemini if a key is set
 ```
+
+The evaluation datasets are small and synthetic. `eval/results.md` separates descriptive
+humanization measurements from expected-verdict checks; neither is external or human validation.
 
 ## Deploy (Streamlit Community Cloud)
 1. Push to GitHub. 2. share.streamlit.io -> New app -> pick repo, branch `main`, file `app.py`.

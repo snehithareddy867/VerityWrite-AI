@@ -50,9 +50,46 @@ _TIME = re.compile(r"\b(\d{1,2}):(\d{2})\s*([AaPp]\.?[Mm]\.?)?")
 _SCORE = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)\s*/\s*(\d+(?:\.\d+)?)(?![\w/])")
 _OUTOF = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)\s+out\s+of\s+(\d+(?:\.\d+)?)(?!\w)", re.IGNORECASE)
 _PCT = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)\s*(?:%|percent\b|per cent\b)", re.IGNORECASE)
+_QUANTITY_UNITS = (
+    "years?", "yrs?", "months?", "weeks?", "days?", "hours?", "hrs?", "minutes?", "mins?",
+    "seconds?", "secs?", "people", "users?", "employees?", "customers?", "candidates?",
+    "reports?", "records?", "items?", "files?", "requests?", "calls?", "tests?", "points?",
+    "emails?", "messages?", "transactions?", "applications?", "tasks?", "projects?", "issues?",
+    "bugs?", "tickets?", "pages?", "words?", "characters?",
+    "kilometers?", "kilometres?", "meters?", "metres?", "miles?", "kilograms?", "grams?",
+    "pounds?", "liters?", "litres?", "milliliters?", "millilitres?", "dollars?", "euros?",
+    "pounds sterling", "times",
+)
+_NUMBER_WORDS = {
+    "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+    "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+    "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+    "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19, "twenty": 20,
+}
+_QUANTITY_NUMBER = r"(?:\d+(?:,\d{3})*(?:\.\d+)?|" + "|".join(reversed(tuple(_NUMBER_WORDS))) + r")"
+_QUANTITY = re.compile(
+    r"(?<![\w.])(?P<currency>[$€£])?\s*(?P<number>" + _QUANTITY_NUMBER + r")"
+    r"\s*(?P<unit>" + "|".join(_QUANTITY_UNITS) + r")\b",
+    re.IGNORECASE,
+)
+_CURRENCY_AMOUNT = re.compile(r"(?<![\w.])(?P<currency>[$€£])\s*(?P<number>\d+(?:,\d{3})*(?:\.\d+)?)(?![\w.])")
 _NUM = re.compile(r"(?<![\w.])(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?![\w])")
 _ACR = re.compile(r"\b[A-Z]{2,6}\b")
 NUM_TOKEN = re.compile(r"\d[\d,]*(?:\.\d+)?")
+_AUXILIARIES = (
+    "do|does|did|is|are|was|were|has|have|had|will|would|can|could|should|must|may|might"
+)
+_POLARITY = re.compile(
+    rf"\b(?P<aux>{_AUXILIARIES})(?P<contract>n't)?"
+    r"(?:\s+(?P<not>not))?\s+(?P<verb>[a-z]+)\b",
+    re.IGNORECASE,
+)
+_NEGATIVE_PREDICATE = re.compile(
+    r"\b(?:never|failed\s+to|unable\s+to|not\s+able\s+to)\s+(?P<verb>[a-z]+)\b"
+    r"|\bwithout\s+(?P<gerund>[a-z]+ing)\b",
+    re.IGNORECASE,
+)
+_POSITIVE_PREDICATE = re.compile(r"\bable\s+to\s+(?P<verb>[a-z]+)\b", re.IGNORECASE)
 
 
 @dataclass
@@ -74,6 +111,72 @@ def norm_num(s: str) -> str:
 
 def month_num(word: str) -> int:
     return _SHORT.index(word.lower().rstrip(".")[:3]) + 1
+
+
+def _verb_stem(verb: str) -> str:
+    word = verb.lower()
+    if word.endswith("ies") and len(word) > 4:
+        return word[:-3] + "y"
+    if word.endswith("ing") and len(word) > 5:
+        word = word[:-3]
+        if len(word) > 2 and word[-1] == word[-2]:
+            word = word[:-1]
+    elif word.endswith("ed") and len(word) > 4:
+        word = word[:-2]
+    elif word.endswith("s") and len(word) > 3:
+        word = word[:-1]
+    return word[:-1] if word.endswith("e") and len(word) > 3 else word
+
+
+def _unit_key(unit: str) -> str:
+    normalized = unit.casefold()
+    if normalized.endswith("ies"):
+        return normalized[:-3] + "y"
+    if normalized.endswith("s") and normalized not in {"people", "pounds sterling"}:
+        return normalized[:-1]
+    return normalized
+
+
+def _quantity_number(value: str) -> str:
+    normalized = value.casefold()
+    if normalized in _NUMBER_WORDS:
+        return str(_NUMBER_WORDS[normalized])
+    return norm_num(value)
+
+
+def _polarity_facts(text: str) -> list[Fact]:
+    facts = []
+    for match in _POLARITY.finditer(text):
+        if match.group("verb").lower() in {"able", "unable", "hesitate", "only", "just"}:
+            continue
+        negative = bool(match.group("contract") or match.group("not"))
+        verb = _verb_stem(match.group("verb"))
+        facts.append(Fact(
+            "polarity",
+            match.group(0),
+            f"polarity:{verb}:{'negative' if negative else 'positive'}",
+            match.span(),
+            (verb, negative),
+        ))
+    for match in _NEGATIVE_PREDICATE.finditer(text):
+        verb = _verb_stem(match.group("verb") or match.group("gerund"))
+        facts.append(Fact(
+            "polarity",
+            match.group(0),
+            f"polarity:{verb}:negative",
+            match.span(),
+            (verb, True),
+        ))
+    for match in _POSITIVE_PREDICATE.finditer(text):
+        verb = _verb_stem(match.group("verb"))
+        facts.append(Fact(
+            "polarity",
+            match.group(0),
+            f"polarity:{verb}:positive",
+            match.span(),
+            (verb, False),
+        ))
+    return facts
 
 
 def _sentence_start(s: str, pos: int) -> bool:
@@ -112,6 +215,15 @@ def extract_facts(text: str, extra_terms=()) -> list:
     scan(_SCORE, lambda m: F("score", m, f"score:{norm_num(m.group(1))}/{norm_num(m.group(2))}"))
     scan(_OUTOF, lambda m: F("score", m, f"score:{norm_num(m.group(1))}/{norm_num(m.group(2))}"))
     scan(_PCT, lambda m: F("pct", m, f"pct:{norm_num(m.group(1))}"))
+    scan(_QUANTITY, lambda m: F(
+        "quantity", m,
+        f"quantity:{_quantity_number(m.group('number'))}:"
+        f"{(m.group('currency') or '').lower()}{_unit_key(m.group('unit'))}",
+    ))
+    scan(_CURRENCY_AMOUNT, lambda m: F(
+        "quantity", m,
+        f"quantity:{norm_num(m.group('number'))}:{m.group('currency')}",
+    ))
     scan(_TECH_RE, lambda m: F("term", m, "term:" + m.group(0).lower()))
     scan(_ACR, lambda m: F("term", m, "term:" + m.group(0).lower()))
 

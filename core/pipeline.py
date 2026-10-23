@@ -9,6 +9,8 @@ from .llm import LLMClient, LLMError, judge
 from .rewriter import build_prompt, rewrite_fallback, rewrite_llm
 from .verifier import FactReport, Item, verify_output
 
+MAX_RETRIES = 2
+
 
 @dataclass
 class Result:
@@ -24,7 +26,21 @@ class Result:
 
     @property
     def approved(self) -> bool:
-        return self.report.verdict != "BLOCKED"
+        return self.report.verdict == "PASS"
+
+    @property
+    def unchanged(self) -> bool:
+        return self.output == self.original
+
+    @property
+    def status(self) -> str:
+        if self.mode == "skipped":
+            return "skipped"
+        if self.unchanged:
+            return "unchanged"
+        if self.mode == "gemini":
+            return "rewritten"
+        return self.mode
 
 
 def add_judge_items(report: FactReport, j: dict | None) -> None:
@@ -58,7 +74,8 @@ def humanize(text: str, context: str, tone: str, llm: LLMClient | None = None, v
     notes, feedback, output, mode, j = [], "", text, "fallback", None
     report = verify_output(text, facts, text, strict)
     attempts = 0
-    for attempts in range(1, max_retries + 2):
+    retry_limit = min(max(max_retries, 0), MAX_RETRIES)
+    for attempts in range(1, retry_limit + 2):
         mode = "fallback"
         if llm is not None and llm.available:
             try:
@@ -66,7 +83,7 @@ def humanize(text: str, context: str, tone: str, llm: LLMClient | None = None, v
                                                        voice_examples, feedback))
                 mode = "gemini"
             except LLMError as e:
-                notes.append(f"Gemini unavailable ({e}). Used the offline rule-based rewriter.")
+                notes.append(f"Gemini rewrite failed ({e}). Used the offline fallback instead.")
                 output = rewrite_fallback(text)
         else:
             output = rewrite_fallback(text)
@@ -74,15 +91,28 @@ def humanize(text: str, context: str, tone: str, llm: LLMClient | None = None, v
         if report.verdict != "BLOCKED":
             break
         feedback = _feedback(report)
-        notes.append(f"Attempt {attempts} failed verification; retrying with feedback.")
         if mode == "fallback":
-            break  # deterministic fallback would repeat itself
+            notes.append(f"Fallback failed verification on attempt {attempts}; no further fallback retry was attempted.")
+            break
+        if attempts <= retry_limit:
+            notes.append(f"Gemini attempt {attempts} failed verification; retrying with feedback.")
+        else:
+            notes.append(f"Gemini verification failed after {attempts} attempts; retry limit reached.")
 
     if mode == "gemini" and use_judge and report.verdict != "BLOCKED":
         j = judge(llm, text, output)
         add_judge_items(report, j)
     if report.verdict == "BLOCKED":
-        notes.append("Verification failed. The rewrite is shown for review but NOT approved.")
-    if mode == "fallback" and not any("Gemini" in n for n in notes):
-        notes.append("No Gemini key configured: using the basic offline rewriter (demo mode).")
+        notes.append("Verification failed. This rewrite is NOT approved or verified; do not treat it as safe to use.")
+    elif report.verdict == "REVIEW":
+        notes.append("Human review required. This result is NOT approved until its warnings are resolved and verification passes.")
+    if mode == "fallback":
+        if output == text:
+            notes.append("The offline fallback made no changes; the original text is shown unchanged, not as a rewrite.")
+        elif llm is None:
+            notes.append("No Gemini client was provided; used the basic offline fallback.")
+        elif not llm.available and not any("Gemini rewrite failed" in note for note in notes):
+            notes.append("Gemini is unavailable; used the basic offline fallback.")
+        elif not any("Gemini rewrite failed" in note for note in notes):
+            notes.append("Used the basic offline fallback.")
     return Result(text, output, mode, analysis, facts, report, j, attempts, notes)

@@ -6,12 +6,16 @@ Text-to-speech uses gTTS, so spoken output works even without a Gemini key.
 from __future__ import annotations
 
 import io
+import wave
 
 from .llm import LLMClient, LLMError
 
-MAX_AUDIO_BYTES = 15 * 1024 * 1024
+MAX_AUDIO_BYTES = 14 * 1024 * 1024
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
 MAX_TTS_CHARS = 4500
+SUPPORTED_AUDIO_MIMES = {
+    "audio/aac", "audio/aiff", "audio/flac", "audio/ogg", "audio/mp3", "audio/wav",
+}
 
 
 class MediaError(Exception):
@@ -61,8 +65,10 @@ def normalize_audio_mime(mime: str | None, audio: bytes) -> str:
             return "audio/mp3"
         if clean in ("audio/ogg", "application/ogg"):
             return "audio/ogg"
-        if clean in ("audio/mp4", "audio/m4a", "audio/x-m4a", "audio/aac"):
-            return "audio/mp4"
+        if clean in ("audio/aiff", "audio/x-aiff"):
+            return "audio/aiff"
+        if clean == "audio/aac":
+            return "audio/aac"
         if clean.startswith("audio/"):
             return clean
 
@@ -75,7 +81,11 @@ def normalize_audio_mime(mime: str | None, audio: bytes) -> str:
         return "audio/ogg"
     if audio.startswith(b"ID3") or (len(audio) > 2 and audio[:2] in (b"\xff\xfb", b"\xff\xf3", b"\xff\xf2")):
         return "audio/mp3"
-    return "audio/wav"
+    if audio.startswith(b"fLaC"):
+        return "audio/flac"
+    if audio.startswith(b"FORM") and b"AIFF" in audio[:12]:
+        return "audio/aiff"
+    return ""
 
 
 def normalize_image_mime(mime: str | None, image: bytes) -> str:
@@ -106,15 +116,28 @@ def _text_from(data: dict) -> str:
     return str(data.get("text", "")).strip()
 
 
-def transcribe_audio(llm: LLMClient, audio: bytes, mime: str = "audio/wav") -> str:
+def transcribe_audio(llm: LLMClient, audio: bytes, mime: str | None = None) -> str:
     _require(llm)
     if not audio or len(audio.strip()) == 0:
         raise MediaError("No audio was recorded or the recording is empty.")
     if len(audio) > MAX_AUDIO_BYTES:
         raise MediaError("That recording is too large. Try a shorter one.")
     clean_mime = normalize_audio_mime(mime, audio)
-    part = _genai_types().Part.from_bytes(data=audio, mime_type=clean_mime)
-    text = _text_from(llm.generate_json([part, TRANSCRIBE_PROMPT], temperature=0.0))
+    if clean_mime not in SUPPORTED_AUDIO_MIMES:
+        raise MediaError(
+            f"Unsupported audio format ({clean_mime or 'unknown'}). "
+            "Record audio in Voice Dictation as WAV, or use WAV, MP3, AAC, AIFF, FLAC, or OGG audio."
+        )
+    if clean_mime == "audio/wav":
+        try:
+            with wave.open(io.BytesIO(audio), "rb") as recording:
+                if recording.getnframes() == 0:
+                    raise MediaError("The WAV recording contains no audio frames.")
+        except MediaError:
+            raise
+        except (EOFError, OSError, wave.Error) as error:
+            raise MediaError("The WAV recording is malformed or unreadable. Please record it again.") from error
+    text = llm.generate_audio_text(audio, clean_mime, TRANSCRIBE_PROMPT)
     if not text:
         raise MediaError("No speech was detected. Please try recording again.")
     return text

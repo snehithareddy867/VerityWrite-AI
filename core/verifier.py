@@ -3,9 +3,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .facts import NUM_TOKEN, extract_facts, norm_num
+from .facts import NUM_TOKEN, _polarity_facts, _verb_stem, extract_facts, norm_num
 
-CRITICAL_ADD_KINDS = {"date", "time", "score", "pct", "num", "email"}
+CRITICAL_ADD_KINDS = {"date", "time", "score", "pct", "quantity", "num", "email"}
 
 
 @dataclass
@@ -65,7 +65,7 @@ def _num_tokens(text: str) -> set:
 
 def verify_output(source: str, facts: list, output: str, strict: bool = False) -> FactReport:
     out_facts = extract_facts(output)
-    out_l, src_l = output.lower(), source.lower()
+    out_l, src_l = output.casefold(), source.casefold()
     out_keys = {(f.kind, f.key) for f in out_facts}
     src_keys = {(f.kind, f.key) for f in facts}
     out_nums, src_nums = _num_tokens(output), _num_tokens(source)
@@ -74,8 +74,56 @@ def verify_output(source: str, facts: list, output: str, strict: bool = False) -
 
     items: list = []
     missing: list = []
+    consumed_additions: set[int] = set()
+
+    source_polarities = _polarity_facts(source)
+    output_polarities = _polarity_facts(output)
+    for fact in source_polarities:
+        verb, negative = fact.meta
+        matching = [candidate for candidate in output_polarities if candidate.meta[0] == verb]
+        if negative:
+            opposite = next((candidate for candidate in matching if not candidate.meta[1]), None)
+            if opposite:
+                consumed_additions.add(id(opposite))
+                scoped = verb in {"think", "believe", "suppose", "expect", "guess"}
+                items.append(Item(
+                    "polarity", fact.text, opposite.text,
+                    "review" if scoped else "changed",
+                    "warning" if scoped else "critical",
+                    "Negation changed around a statement of belief; review the intended meaning."
+                    if scoped else "Meaning-reversing polarity change: a negated action became affirmative.",
+                ))
+            else:
+                same_polarity = next((candidate for candidate in matching if candidate.meta[1]), None)
+                if not same_polarity:
+                    items.append(Item(
+                        "polarity", fact.text, "", "review", "warning",
+                        "Negated action was not matched; review whether its meaning was preserved.",
+                    ))
+        else:
+            opposite = next((candidate for candidate in matching if candidate.meta[1]), None)
+            if opposite:
+                consumed_additions.add(id(opposite))
+                scoped = verb in {"think", "believe", "suppose", "expect", "guess"}
+                items.append(Item(
+                    "polarity", fact.text, opposite.text,
+                    "review" if scoped else "changed",
+                    "warning" if scoped else "critical",
+                    "Negation changed around a statement of belief; review the intended meaning."
+                    if scoped else "Meaning-reversing polarity change: an affirmative action became negated.",
+                ))
+
+    source_polarity_verbs = {fact.meta[0] for fact in source_polarities}
+    for fact in output_polarities:
+        if fact.meta[1] and fact.meta[0] not in source_polarity_verbs and id(fact) not in consumed_additions:
+            items.append(Item(
+                "polarity", "", fact.text, "added", "warning",
+                "The rewrite adds an unsupported negated action; review its meaning.",
+            ))
 
     for f in facts:
+        if f.kind == "polarity":
+            continue
         status, shown = "missing", ""
         if f.kind == "date":
             best = None
@@ -89,12 +137,38 @@ def verify_output(source: str, facts: list, output: str, strict: bool = False) -
             if best:
                 status = "preserved" if best == "ok" else "partial"
         elif f.kind in ("name", "custom"):
-            if f.text.lower() in out_l:
+            if f.text.casefold() in out_l:
                 status, shown = "preserved", f.text
             else:
                 parts = [p for p in f.text.split() if len(p) > 2]
+                same_name = next(
+                    (
+                        candidate for candidate in out_facts
+                        if f.kind == "name"
+                        and candidate.kind == "name"
+                        and {word.casefold() for word in candidate.text.split()}
+                        == {word.casefold() for word in parts}
+                    ),
+                    None,
+                )
                 hit = next((p for p in parts if p.lower() in out_l), None)
-                if hit and len(parts) > 1:
+                replacement = next(
+                    (
+                        candidate for candidate in out_facts
+                        if f.kind == "name"
+                        and candidate.kind == "name"
+                        and len(candidate.text.split()) == len(parts)
+                        and candidate.text.casefold().split()[0] == parts[0].casefold()
+                    ),
+                    None,
+                )
+                if same_name:
+                    status, shown = "preserved", same_name.text
+                    consumed_additions.add(id(same_name))
+                elif replacement:
+                    status, shown = "changed", replacement.text
+                    consumed_additions.add(id(replacement))
+                elif hit and len(parts) > 1:
                     status, shown = "partial", hit
         elif f.kind == "num":
             if f.key.split(":", 1)[1] in out_nums:
@@ -105,6 +179,9 @@ def verify_output(source: str, facts: list, output: str, strict: bool = False) -
 
         if status == "preserved":
             items.append(Item(f.kind, f.text, shown, "preserved", "ok", "Present in the rewrite."))
+        elif status == "changed":
+            items.append(Item(f.kind, f.text, shown, "changed", "critical",
+                              f"Protected {f.kind} changed: '{f.text}' became '{shown}'."))
         elif status == "partial":
             sev = "critical" if strict else "warning"
             items.append(Item(f.kind, f.text, shown, "partial", sev,
@@ -127,10 +204,10 @@ def verify_output(source: str, facts: list, output: str, strict: bool = False) -
             if (o.kind, o.key) not in src_keys:
                 added.append(o)
         elif o.kind == "term":
-            if (o.kind, o.key) not in src_keys and o.text.lower() not in src_l:
+            if (o.kind, o.key) not in src_keys and o.text.casefold() not in src_l:
                 added.append(o)
         elif o.kind == "name":
-            if o.text.lower() not in src_l:
+            if o.text.casefold() not in src_l:
                 added.append(o)
 
     for kind in {m.kind for m in missing}:
@@ -144,6 +221,8 @@ def verify_output(source: str, facts: list, output: str, strict: bool = False) -
     for m in missing:
         items.append(Item(m.kind, m.text, "", "missing", "critical", "Protected fact is missing from the rewrite."))
     for a in added:
+        if id(a) in consumed_additions:
+            continue
         crit = a.kind in CRITICAL_ADD_KINDS
         items.append(Item(a.kind, "", a.text, "added", "critical" if crit else "warning",
                           "Not in the original text: unsupported addition." if crit

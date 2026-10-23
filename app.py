@@ -81,6 +81,7 @@ S.setdefault("history", [])
 S.setdefault("nav_choice", "Workspace")
 S.setdefault("shot_text", "")
 S.setdefault("voice_transcribed_text", "")
+S.setdefault("voice_transcribing", False)
 S.setdefault("last_duration_ms", 320)
 S.setdefault("extra_terms_input", "")
 
@@ -154,6 +155,22 @@ def transfer_and_humanize_shot():
         S["input_text"] = edited
         S.result = None
         S.pending_humanize = True
+
+
+def transfer_voice_text():
+    val = (S.get("voice_transcribed_edit") or S.get("voice_transcribed_text", "")).strip()
+    if val:
+        S["pending_text"] = val
+        S["result"] = None
+        S["workspace_notice"] = ("success", "Transcribed speech loaded into Workspace!")
+
+
+def transfer_voice_and_humanize():
+    val = (S.get("voice_transcribed_edit") or S.get("voice_transcribed_text", "")).strip()
+    if val:
+        S["pending_text"] = val
+        S["result"] = None
+        S["pending_humanize"] = True
 
 
 def load_history_entry(orig_text: str):
@@ -816,7 +833,7 @@ if nav == "Workspace":
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" style="color: #d0bcff;"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
                     <span>Live Acoustic Capture Console</span>
                 </div>
-                <span class="editor-diag-pill text-green">WHISPER / GEMINI MULTIMODAL</span>
+                <span class="editor-diag-pill text-green">GEMINI AUDIO TRANSCRIPTION</span>
             </div>
             <div class="mini-waveform">
                 <div class="mini-bar" style="animation-delay: 0.1s; height: 35%;"></div>
@@ -839,12 +856,14 @@ if nav == "Workspace":
         with v_act_col:
             v_act_1, v_act_2 = st.columns(2)
             with v_act_1:
-                btn_transcribe = st.button("✨ Transcribe", disabled=audio is None, type="primary", use_container_width=True, key="btn_transcribe_voice", help="Transcribe speech directly into Workspace")
+                btn_transcribe = st.button("✨ Transcribe", disabled=audio is None or S.voice_transcribing, type="primary", use_container_width=True, key="btn_transcribe_voice", help="Transcribe speech directly into Workspace")
             with v_act_2:
-                btn_transcribe_run = st.button("⚡ Run Pipeline", disabled=audio is None, type="secondary", use_container_width=True, key="btn_transcribe_and_run", help="Transcribe speech and immediately run Humanize & Verify")
+                btn_transcribe_run = st.button("⚡ Run Pipeline", disabled=audio is None or S.voice_transcribing, type="secondary", use_container_width=True, key="btn_transcribe_and_run", help="Transcribe speech and immediately run Humanize & Verify")
 
             if btn_transcribe or btn_transcribe_run:
-                if not llm.available:
+                if S.voice_transcribing:
+                    st.info("Transcription is already in progress.")
+                elif not llm.available:
                     diag = diagnose_gemini_key(custom_key=S.get("custom_gemini_key"), env_path=ENV_PATH)
                     msg = "⚠️ Voice transcription requires a Gemini API key."
                     if diag.get("issue"):
@@ -858,42 +877,44 @@ if nav == "Workspace":
                     st.warning("Please record audio before transcribing.")
                 else:
                     audio_bytes = audio.getvalue()
-                    if not audio_bytes or len(audio_bytes) < 100:
-                        st.error("Audio recording is empty or silent. Please speak into your microphone and try again.")
+                    if not audio_bytes:
+                        st.error("Audio recording is empty. Please record your voice and try again.")
                     else:
-                        with st.spinner("Transcribing acoustic audio stream with Gemini Multimodal..."):
-                            try:
-                                transcribed = transcribe_audio(llm, audio_bytes, audio.type or "audio/wav")
-                                S.voice_transcribed_text = transcribed
-                                S.pending_text = transcribed
-                                S.workspace_notice = ("success", "Voice dictation transcribed into Workspace! Review your draft below or click 'Humanize & Verify'.")
-                                if btn_transcribe_run:
-                                    S.pending_humanize = True
-                                st.rerun()
-                            except (LLMError, MediaError) as e:
-                                st.error(f"Transcription error: {e}")
-            st.caption("44.1kHz sampling &bull; Lossless audio buffer &bull; Zero storage")
+                        S.voice_transcribing = True
+                        try:
+                            with st.spinner("Transcribing audio with Gemini..."):
+                                transcribed = transcribe_audio(llm, audio_bytes, audio.type)
+                            S.voice_transcribed_text = transcribed
+                            S.pending_text = transcribed
+                            S.workspace_notice = ("success", "Voice dictation transcribed into Workspace! Review your draft below or click 'Humanize & Verify'.")
+                            if btn_transcribe_run:
+                                S.pending_humanize = True
+                            st.rerun()
+                        except (LLMError, MediaError) as e:
+                            st.error(f"Transcription error: {e}")
+                        finally:
+                            S.voice_transcribing = False
+            st.caption("Recorded WAV stays in memory locally and is sent to Gemini for transcription.")
 
         if S.get("voice_transcribed_text"):
             st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
             st.text_area("Last Transcribed Speech (Editable)", value=S.voice_transcribed_text, height=90, key="voice_transcribed_edit")
             vt_col1, vt_col2 = st.columns(2)
             with vt_col1:
-                if st.button("➡️ Transfer to Workspace Input", key="btn_transfer_voice_manual", use_container_width=True):
-                    val = (S.get("voice_transcribed_edit") or "").strip() or S.voice_transcribed_text
-                    S.input_text = val
-                    S["input_text"] = val
-                    S.result = None
-                    S.workspace_notice = ("success", "Transcribed speech loaded into workspace!")
-                    st.rerun()
+                st.button(
+                    "➡️ Transfer to Workspace Input",
+                    key="btn_transfer_voice_manual",
+                    use_container_width=True,
+                    on_click=transfer_voice_text,
+                )
             with vt_col2:
-                if st.button("⚡ Transfer & Humanize Now", key="btn_transfer_voice_run", type="primary", use_container_width=True):
-                    val = (S.get("voice_transcribed_edit") or "").strip() or S.voice_transcribed_text
-                    S.input_text = val
-                    S["input_text"] = val
-                    S.result = None
-                    S.pending_humanize = True
-                    st.rerun()
+                st.button(
+                    "⚡ Transfer & Humanize Now",
+                    key="btn_transfer_voice_run",
+                    type="primary",
+                    use_container_width=True,
+                    on_click=transfer_voice_and_humanize,
+                )
 
     # -------------------------------------------------------------
     # TAB 3: SCREENSHOT OCR
@@ -1051,7 +1072,7 @@ if nav == "Workspace":
             S.edited_output = res.output
             S.terms = terms
 
-            if res.approved and res.mode != "skipped":
+            if res.approved and res.mode != "skipped" and not res.unchanged:
                 S.voice_examples = (S.voice_examples + [res.output])[-5:]
 
             history_item = {
@@ -1061,6 +1082,7 @@ if nav == "Workspace":
                 "output": res.output,
                 "verdict": res.report.verdict,
                 "mode": res.mode,
+                "status": res.status,
                 "tone": S.tone,
                 "context": S.context,
                 "facts_ratio": f"{res.report.preserved}/{res.report.total_facts}",
@@ -1088,12 +1110,18 @@ if nav == "Workspace":
             v_badge_text = "PASS • All Integrity Checks Satisfied"
         elif verdict == "REVIEW":
             v_badge_class = "verdict-review"
-            v_badge_text = "REVIEW • Check Flagged Warnings"
+            v_badge_text = "REVIEW • Human Review Required"
         else:
             v_badge_class = "verdict-blocked"
-            v_badge_text = "BLOCKED • Protected Fact Missing/Altered"
+            v_badge_text = "BLOCKED • Not Verified / Not Approved"
 
-        engine_name = {"gemini": f"Gemini ({llm.model})", "fallback": "Offline Rules Engine", "skipped": "Skipped Gate"}[res.mode]
+        engine_name = (
+            "Skipped Gate"
+            if res.mode == "skipped" else
+            "Original Text (unchanged)"
+            if res.unchanged else
+            {"gemini": f"Gemini ({llm.model})", "fallback": "Offline Rules Engine"}[res.mode]
+        )
         hash_id = f"#vw-{hash(res.original) % 10000:04d}-delta"
 
         st.markdown(f"""
@@ -1139,7 +1167,7 @@ if nav == "Workspace":
             </div>
             <div class="stat-tile">
                 <div class="stat-tile-label">Engine Pipeline</div>
-                <div class="stat-tile-val" style="font-size: 18px; color: #cebdff;">{res.mode.title()}</div>
+                <div class="stat-tile-val" style="font-size: 18px; color: #cebdff;">{res.status.title()}</div>
                 <div style="font-size: 11.5px; color: #cbc3d7;">Deterministic verification</div>
             </div>
             <div class="stat-tile">

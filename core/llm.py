@@ -1,11 +1,11 @@
 """Thin Gemini wrapper. Everything degrades gracefully when no key / API failure."""
 from __future__ import annotations
 
+import base64
 import json
 import os
 import re
 import time
-
 
 from pathlib import Path
 try:
@@ -21,7 +21,27 @@ class LLMError(Exception):
     pass
 
 
-DEFAULT_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemini-2.5-flash"
+DEFAULT_AUDIO_MODEL = "gemini-3.5-flash-lite"
+MAX_AUDIO_ATTEMPTS = 2
+
+
+def _api_status_code(error: Exception) -> int | None:
+    code = getattr(error, "code", None)
+    if code is not None:
+        try:
+            return int(code)
+        except (TypeError, ValueError):
+            pass
+    match = re.search(r"\b(400|401|403|404|408|429|5\d\d)\b", str(error))
+    return int(match.group(1)) if match else None
+
+
+def _is_timeout_error(error: Exception) -> bool:
+    return isinstance(error, TimeoutError) or type(error).__name__ in {
+        "APITimeoutError", "ConnectTimeout", "PoolTimeout", "ReadTimeout",
+        "TimeoutException", "WriteTimeout",
+    }
 
 
 def clean_api_key(val: str | None) -> str:
@@ -233,8 +253,7 @@ class LLMClient:
             resolved = clean_api_key(api_key)
         self.api_key = resolved or None
         chosen = (model or os.getenv("GEMINI_MODEL") or "").strip()
-        # Correct legacy or invalid placeholder model
-        if not chosen or chosen == "gemini-2.5-flash":
+        if not chosen:
             chosen = DEFAULT_MODEL
         self.model = chosen
         self.init_error = ""
@@ -255,38 +274,44 @@ class LLMClient:
 
     def test_connection(self) -> dict:
         """Test API connectivity and retrieve available generateContent models."""
-        if not self.available:
+        client = self._client
+        if client is None:
             return {"ok": False, "error": "No Gemini API key configured."}
         try:
             models = []
-            for m in self._client.models.list():
+            for m in client.models.list():
                 name = getattr(m, "name", "") or str(m)
                 short = name.split("/")[-1] if "/" in name else name
-                methods = getattr(m, "supported_generation_methods", []) or getattr(m, "supported_actions", []) or []
                 models.append(short)
             return {"ok": True, "models": models[:12]}
         except Exception as e:
             err = str(e)
             hint = ""
             if "404" in err or "NOT_FOUND" in err:
-                hint = ("\n\n💡 Google returned 404 NOT_FOUND: Ensure 'Generative Language API' is enabled in your Google Cloud project, "
-                        "or generate a standard API key from Google AI Studio: https://aistudio.google.com/app/apikey")
-            elif "400" in err or "403" in err or "API_KEY_INVALID" in err:
-                hint = "\n\n💡 Authentication failed: Check that the API key was copied completely and has not expired."
+                hint = ("\n\nGoogle returned 404 NOT_FOUND while listing Gemini models. Check that the key and "
+                        "project have access to the Gemini API, and verify the currently supported models at "
+                        "https://ai.google.dev/gemini-api/docs/models. Create a Gemini API key in Google AI Studio: "
+                        "https://aistudio.google.com/app/apikey")
+            elif "403" in err:
+                hint = ("\n\nGoogle denied access (403). Check API key restrictions, project permissions, and "
+                        "whether the Gemini API is enabled for the project.")
+            elif "400" in err or "API_KEY_INVALID" in err:
+                hint = "\n\nGoogle rejected the request or API key. Check the key and request details."
             return {"ok": False, "error": f"{err}{hint}"}
 
     def generate_json(self, prompt: str | list, temperature: float = 0.3) -> dict:
-        if not self.available:
+        client = self._client
+        if client is None:
             raise LLMError("No Gemini API key configured")
         last = None
         models_to_try = [self.model]
-        for fallback_m in ("gemini-2.0-flash", "gemini-2.5-flash", "gemini-1.5-flash"):
+        for fallback_m in ("gemini-2.5-flash", DEFAULT_AUDIO_MODEL):
             if fallback_m not in models_to_try:
                 models_to_try.append(fallback_m)
 
         for current_model in models_to_try:
             try:
-                resp = self._client.models.generate_content(
+                resp = client.models.generate_content(
                     model=current_model, contents=prompt,
                     config=self._types.GenerateContentConfig(
                         temperature=temperature, response_mime_type="application/json"))
@@ -305,19 +330,101 @@ class LLMClient:
                 last = e
             except Exception as e:
                 err_str = str(e)
-                if "API_KEY_INVALID" in err_str or "400" in err_str or "403" in err_str:
+                if "API_KEY_INVALID" in err_str or "401" in err_str:
                     last = LLMError(f"Gemini authentication failed: {err_str}")
+                    break
+                if "403" in err_str:
+                    last = LLMError(
+                        f"Gemini access denied (403). Check API key restrictions, project permissions, "
+                        f"and whether the Gemini API is enabled: {err_str}"
+                    )
+                    break
+                if "400" in err_str:
+                    last = LLMError(f"Gemini rejected the request (400): {err_str}")
                     break
                 if "404" in err_str or "not found" in err_str.lower():
                     last = LLMError(
-                        f"Gemini model '{current_model}' returned 404 NOT_FOUND. "
-                        "This typically indicates that the 'Generative Language API' is not enabled for this project, "
-                        "or the API key has restricted access. Get a key from Google AI Studio: https://aistudio.google.com/app/apikey"
+                        f"Gemini model '{current_model}' is unavailable to this key or endpoint (404 NOT_FOUND). "
+                        "Check the current Gemini model list and API access: "
+                        "https://ai.google.dev/gemini-api/docs/models"
                     )
                     continue
                 last = LLMError(f"Gemini call failed: {err_str}")
             time.sleep(0.5)
         raise last or LLMError("Unknown LLM error")
+
+    def generate_audio_text(self, audio: bytes, mime_type: str, prompt: str) -> str:
+        """Transcribe inline audio without uploading or storing a Gemini interaction."""
+        client = self._client
+        if client is None:
+            raise LLMError("No Gemini API key configured")
+
+        model = (os.getenv("GEMINI_AUDIO_MODEL") or DEFAULT_AUDIO_MODEL).strip()
+        audio_data = base64.b64encode(audio).decode("ascii")
+        request_input = [
+            {"type": "text", "text": prompt},
+            {"type": "audio", "data": audio_data, "mime_type": mime_type},
+        ]
+
+        for attempt in range(MAX_AUDIO_ATTEMPTS):
+            try:
+                interaction = client.interactions.create(
+                    model=model,
+                    input=request_input,
+                    store=False,
+                )
+                text = getattr(interaction, "output_text", None)
+                if not isinstance(text, str):
+                    raise LLMError("Gemini returned a malformed transcription response.")
+                return text.strip()
+            except LLMError:
+                raise
+            except Exception as error:
+                status = _api_status_code(error)
+                timed_out = _is_timeout_error(error) or status == 408
+                if timed_out:
+                    failure = LLMError(
+                        "Gemini transcription timed out. Try a shorter recording and retry."
+                    )
+                elif status == 404:
+                    failure = LLMError(
+                        f"Gemini audio model '{model}' is unavailable to this API project. "
+                        f"Set GEMINI_AUDIO_MODEL to a current audio-capable model "
+                        f"(default: {DEFAULT_AUDIO_MODEL}) and verify project access."
+                    )
+                elif status in {401, 403} or "API_KEY_INVALID" in str(error):
+                    failure = LLMError(
+                        "Gemini rejected the API key or denied access. Check GEMINI_API_KEY, "
+                        "the key restrictions, and the project’s Gemini API access."
+                    )
+                elif status == 400:
+                    failure = LLMError(
+                        "Gemini rejected the transcription request. Check the audio format "
+                        "and configured audio model."
+                    )
+                elif status == 429:
+                    failure = LLMError(
+                        "Gemini rate limit reached. Wait briefly and try transcription again."
+                    )
+                elif status is not None and status >= 500:
+                    failure = LLMError(
+                        "Gemini transcription is temporarily unavailable. Please try again shortly."
+                    )
+                else:
+                    failure = LLMError(
+                        f"Gemini transcription failed ({type(error).__name__}). "
+                        "Please retry; if it continues, check the Gemini API status and configuration."
+                    )
+
+                transient = timed_out or status == 429 or (
+                    status is not None and status >= 500
+                )
+                if transient and attempt + 1 < MAX_AUDIO_ATTEMPTS:
+                    time.sleep(0.5)
+                    continue
+                raise failure from error
+
+        raise LLMError("Gemini transcription failed after the retry limit.")
 
 
 JUDGE_PROMPT = """You are a strict fact-checker. Compare ORIGINAL and REWRITE.

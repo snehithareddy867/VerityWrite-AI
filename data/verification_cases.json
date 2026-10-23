@@ -1,0 +1,135 @@
+[
+  {
+    "id": "date-equivalent-format",
+    "category": "date",
+    "source": "The interview is on 8 October 2026.",
+    "output": "The interview is on 2026-10-08.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "date-changed",
+    "category": "date",
+    "source": "The interview is on 8 October 2026.",
+    "output": "The interview is on 9 October 2026.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "name-reordered",
+    "category": "name",
+    "source": "Asha Rao completed the Python exercise.",
+    "output": "Rao Asha completed the Python exercise.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "name-changed",
+    "category": "name",
+    "source": "Asha Rao completed the Python exercise.",
+    "output": "Asha Sen completed the Python exercise.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "score-equivalent-format",
+    "category": "score",
+    "source": "The candidate scored 7.5 out of 10.",
+    "output": "The candidate scored 7.5/10.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "score-changed",
+    "category": "score",
+    "source": "The candidate scored 82/100.",
+    "output": "The candidate scored 92/100.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "percentage-equivalent-format",
+    "category": "percentage",
+    "source": "The conversion rate was 12 percent.",
+    "output": "The conversion rate was 12%.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "percentage-changed",
+    "category": "percentage",
+    "source": "The conversion rate was 12%.",
+    "output": "The conversion rate was 15%.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "quantity-rephrased",
+    "category": "quantity",
+    "source": "The team reviewed 5 reports.",
+    "output": "A total of five reports were reviewed.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "quantity-unit-changed",
+    "category": "quantity",
+    "source": "The team reviewed 5 reports.",
+    "output": "The team reviewed 5 emails.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "technical-term-preserved",
+    "category": "technical-term",
+    "source": "She used Python and SQL.",
+    "output": "Her tools included SQL and Python.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "technical-term-swapped",
+    "category": "technical-term",
+    "source": "She used Python for analysis.",
+    "output": "She used Java for analysis.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "negation-contraction",
+    "category": "negation",
+    "source": "Asha did not complete the report.",
+    "output": "Asha didn't complete the report.",
+    "expected_verdict": "PASS"
+  },
+  {
+    "id": "negation-reversed",
+    "category": "negation",
+    "source": "Asha did not complete the report.",
+    "output": "Asha did complete the report.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "negation-uncertain",
+    "category": "negation",
+    "source": "Asha did not complete the report.",
+    "output": "The report remains pending.",
+    "expected_verdict": "REVIEW"
+  },
+  {
+    "id": "dropped-date",
+    "category": "dropped-fact",
+    "source": "The interview is on 8 October 2026.",
+    "output": "The interview is scheduled.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "invented-numeric-claim",
+    "category": "invented-claim",
+    "source": "The candidate completed the interview.",
+    "output": "The candidate completed the interview and won 1 award.",
+    "expected_verdict": "BLOCKED"
+  },
+  {
+    "id": "shortened-name",
+    "category": "name",
+    "source": "Asha Rao completed the Python exercise.",
+    "output": "Asha completed the Python exercise.",
+    "expected_verdict": "REVIEW"
+  },
+  {
+    "id": "harmless-punctuation-and-tone",
+    "category": "safe-rewrite",
+    "source": "Furthermore, the candidate used Python.",
+    "output": "The candidate used Python.",
+    "expected_verdict": "PASS"
+  }
+]

@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 import sys
 import pathlib
+import base64
+from types import SimpleNamespace
 import pytest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
@@ -115,3 +117,192 @@ def test_llm_client_resolves_env_when_no_arg(monkeypatch):
     llm = LLMClient()
     assert llm.api_key == "auto_resolved_env_key"
     assert llm.available is True
+
+
+def test_llm_client_uses_current_default_and_preserves_explicit_model(monkeypatch):
+    monkeypatch.delenv("GEMINI_MODEL", raising=False)
+
+    assert LLMClient(api_key="mock_test_key").model == "gemini-2.5-flash"
+    assert LLMClient(api_key="mock_test_key", model="gemini-2.5-flash-lite").model == "gemini-2.5-flash-lite"
+
+
+def test_generate_json_falls_back_from_unavailable_models(monkeypatch):
+    calls = []
+
+    class FakeModels:
+        def generate_content(self, *, model, contents, config):
+            calls.append(model)
+            if model != "gemini-3.5-flash-lite":
+                raise RuntimeError("404 NOT_FOUND")
+            return SimpleNamespace(text='{"ok": true}')
+
+    llm = LLMClient(api_key="mock_test_key", model="retired-model")
+    llm._client = SimpleNamespace(models=FakeModels())
+    llm._types = SimpleNamespace(GenerateContentConfig=lambda **kwargs: kwargs)
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+
+    assert llm.generate_json("prompt") == {"ok": True}
+    assert calls == ["retired-model", "gemini-2.5-flash", "gemini-3.5-flash-lite"]
+    assert llm.model == "gemini-3.5-flash-lite"
+
+
+def test_generate_audio_text_uses_stateless_interactions_and_inline_audio(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            return SimpleNamespace(output_text="Hello there.")
+
+    monkeypatch.delenv("GEMINI_AUDIO_MODEL", raising=False)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    assert llm.generate_audio_text(b"\x00\x01", "audio/wav", "Transcribe") == "Hello there."
+    request = calls[0]
+    assert request["model"] == "gemini-3.5-flash-lite"
+    assert request["store"] is False
+    assert request["input"] == [
+        {"type": "text", "text": "Transcribe"},
+        {"type": "audio", "data": base64.b64encode(b"\x00\x01").decode("ascii"), "mime_type": "audio/wav"},
+    ]
+
+
+def test_generate_audio_text_honors_configured_model(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            return SimpleNamespace(output_text="Transcript")
+
+    monkeypatch.setenv("GEMINI_AUDIO_MODEL", "configured-audio-model")
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    assert llm.generate_audio_text(b"audio", "audio/wav", "Transcribe") == "Transcript"
+    assert calls[0]["model"] == "configured-audio-model"
+
+
+class _ApiFailure(RuntimeError):
+    def __init__(self, status, message=""):
+        super().__init__(message)
+        self.code = status
+
+
+def test_audio_model_404_is_reported_without_retry(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            raise _ApiFailure(404, "model no longer available")
+
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    with pytest.raises(LLMError, match="audio model .* unavailable"):
+        llm.generate_audio_text(b"audio", "audio/wav", "Transcribe")
+    assert len(calls) == 1
+
+
+def test_audio_invalid_key_is_reported_without_retry(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            raise _ApiFailure(401, "invalid credential")
+
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    with pytest.raises(LLMError, match="rejected the API key"):
+        llm.generate_audio_text(b"audio", "audio/wav", "Transcribe")
+    assert len(calls) == 1
+
+
+def test_audio_transient_server_error_retries_once(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            if len(calls) == 1:
+                raise _ApiFailure(503, "temporarily unavailable")
+            return SimpleNamespace(output_text="Recovered transcript")
+
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    assert llm.generate_audio_text(b"audio", "audio/wav", "Transcribe") == "Recovered transcript"
+    assert len(calls) == 2
+
+
+def test_audio_rate_limit_retry_is_bounded(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            raise _ApiFailure(429, "rate limited")
+
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    with pytest.raises(LLMError, match="rate limit reached"):
+        llm.generate_audio_text(b"audio", "audio/wav", "Transcribe")
+    assert len(calls) == 2
+
+
+def test_audio_timeout_retry_is_bounded(monkeypatch):
+    calls = []
+
+    class APITimeoutError(Exception):
+        pass
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            raise APITimeoutError()
+
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    with pytest.raises(LLMError, match="timed out"):
+        llm.generate_audio_text(b"audio", "audio/wav", "Transcribe")
+    assert len(calls) == 2
+
+
+def test_audio_http_timeout_is_retried_once(monkeypatch):
+    calls = []
+
+    class FakeInteractions:
+        def create(self, **kwargs):
+            calls.append(kwargs)
+            raise _ApiFailure(408, "request timeout")
+
+    monkeypatch.setattr("core.llm.time.sleep", lambda _: None)
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    with pytest.raises(LLMError, match="timed out"):
+        llm.generate_audio_text(b"audio", "audio/wav", "Transcribe")
+    assert len(calls) == 2
+
+
+def test_audio_malformed_response_is_rejected():
+    class FakeInteractions:
+        def create(self, **kwargs):
+            return SimpleNamespace()
+
+    llm = LLMClient(api_key="mock_test_key")
+    llm._client = SimpleNamespace(interactions=FakeInteractions())
+
+    with pytest.raises(LLMError, match="malformed transcription response"):
+        llm.generate_audio_text(b"audio", "audio/wav", "Transcribe")
