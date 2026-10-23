@@ -1,60 +1,95 @@
-# VerityWrite AI (Team Hackprime)
-**Make AI writing sound natural while keeping every fact intact.**
-An AI-powered tool that improves the naturalness and readability of text while preserving its original meaning and facts.
+# VerityWrite AI ✍️
 
-## Pipeline
-`Input -> FactLock (extract protected facts) -> Robotic-language detector -> Skip gate -> Contextual rewrite (Gemini)
--> Verify (deterministic checks + AI judge) -> Retry on failure -> Trust report + meaning diff`
+**VerityWrite AI** is an AI-powered writing assistant that transforms robotic or AI-generated text into natural, readable, human-like writing while preserving the original meaning and important facts.
 
-| Requirement in the brief | Where |
-|---|---|
-| Robotic language detection | `core/analyzer.py` |
-| Entity preservation / factuality protection | `core/facts.py`, `core/verifier.py` |
-| Context-aware tone, configurable levels | `core/rewriter.py` (CONTEXTS, TONES) |
-| Meaning/factuality check | `core/verifier.py` + `core/llm.py::judge` |
-| Consistency | voice notes + earlier approved outputs fed into the prompt (`app.py`, `core/rewriter.py`) |
-| Resistance to unnecessary rewriting | skip gate in `core/pipeline.py` |
-| Voice in / voice out | `core/media.py` (Gemini speech-to-text, gTTS text-to-speech), UI in `app.py` |
-| Screenshot to text or voice | `core/media.py::read_screenshot` (extract text or explain), UI in `app.py` |
+## 🌐 Live Demo
 
-## Run locally
+**Try the application here:** https://veritywrite-ai.onrender.com
+
+## 🚀 Features
+
+- **AI Text Humanization:** Rewrites text into natural, fluent language.
+- **FactLock:** Helps preserve important facts, names, dates, and numbers.
+- **Tone and Domain Selection:** Adapts writing style to different purposes.
+- **Naturalness Detection:** Checks whether text may benefit from rewriting.
+- **Fact and Meaning Verification:** Helps identify changes in meaning or important details.
+- **Voice Input:** Supports voice-based text entry.
+- **Screenshot Input:** Supports extracting or processing text from screenshots.
+- **Readability Analysis:** Compares readability before and after rewriting.
+- **Text-to-Speech:** Converts text into audio.
+- **Export Options:** Supports exporting results for further use.
+
+*Feature availability depends on the deployed application's configuration.*
+
+## 🛠️ Tech Stack
+
+- Python
+- Streamlit
+- Google Gemini API
+- Natural Language Processing (NLP)
+- Pandas
+- gTTS
+- OCR and speech-to-text components
+
+## ⚙️ Installation and Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/snehithareddy867/VerityWrite-AI.git
+cd VerityWrite-AI
+```
+
+### 2. Create a virtual environment
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+```
+
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
-cp .env.example .env               # then paste your Gemini key (https://aistudio.google.com/apikey)
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file if your project uses environment variables, and add the API key using the variable name expected by your code.
+
+Never commit API keys or other secrets to GitHub.
+
+### 5. Run the application
+
+```bash
 streamlit run app.py
 ```
-Without a key the app still runs in offline demo mode (basic rule-based rewriter; verification works fully).
 
-## Readability dashboard
-The results section opens with a Multi-Readability Suite: six formulas (Flesch Reading Ease, Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, ARI), an overall score gauge, and the original-vs-rewrite comparison. Scores are calculated locally in `core/readability.py`; the HTML lives in `core/readview.py`. *Export results* downloads a CSV and *Copy all scores* copies them as text.
+The application will display a local URL in your terminal, usually `http://localhost:8501`.
 
-## Voice and screenshots
-- **Speak:** record in the app, click *Transcribe*; audio is sent in memory to Gemini's stateless Interactions API using `GEMINI_AUDIO_MODEL` (default `gemini-3.5-flash-lite`), and the transcript lands in the text box so you can edit it before humanizing. The selected model must be enabled for the API key's project.
-- **Listen:** every rewrite (and screenshot result) has a 🔊 button that reads it aloud.
-- **Screenshot:** upload an image, choose *Extract the text* or *Explain what it shows*, then listen to it or send it to the rewriter.
-- Voice input and screenshot reading need a Gemini key; listening uses gTTS and needs internet access.
-- Audio is sent with `store=false` and is not written to a local file; images are also sent to Gemini. Use synthetic or non-sensitive content only.
+## 🎯 Project Objective
 
-## Test and evaluate
-```bash
-python -m pytest -q
-python eval/run_eval.py --offline  # deterministic fallback; writes eval/results.md
-python eval/run_eval.py            # uses Gemini if a key is set
-```
+The objective of VerityWrite AI is to improve the naturalness and readability of written content while helping preserve its original facts and meaning. It combines AI-powered rewriting with verification and readability tools to support clearer communication.
 
-The evaluation datasets are small and synthetic. `eval/results.md` separates descriptive
-humanization measurements from expected-verdict checks; neither is external or human validation.
+## 👥 Intended Users
 
-## Deploy (Streamlit Community Cloud)
-1. Push to GitHub. 2. share.streamlit.io -> New app -> pick repo, branch `main`, file `app.py`.
-3. Advanced settings -> Secrets: `GEMINI_API_KEY = "..."`. 4. Deploy, then open the URL on your phone to test.
+- Students
+- Content writers
+- Professionals
+- HR recruiters
+- Researchers
+- Digital marketers
 
-## Responsible AI
-Synthetic data only. Observations (detected facts) are separated from conclusions (verdicts); anything uncertain is
-marked REVIEW; BLOCKED output is never presented as approved; a human reviews before sending. Limits: names are found
-heuristically; invented claims with no number/date/name rely on the AI judge and human review.
+## 🔗 Links
 
-## Owners
-See `TEAM.md`.
+- **Live Application:** https://veritywrite-ai.onrender.com
+- **GitHub Repository:** https://github.com/snehithareddy867/VerityWrite-AI
+
+## 👩‍💻 Author
+
+Developed as an AI-powered writing assistant project.
